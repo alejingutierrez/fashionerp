@@ -1,0 +1,36 @@
+# --- core API ---
+fastapi==0.115.2
+uvicorn[standard]==0.23.2
+pydantic==2.7.1
+python-multipart==0.0.9
+
+# --- persistence ---
+SQLAlchemy==2.0.30
+asyncpg==0.29.0          # driver PostgreSQL “async”
+psycopg2-binary==2.9.9   # opcional para scripts sync/admin
+alembic==1.13.1
+
+# --- security & auth ---
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]==3.3.0
+itsdangerous==2.2.0
+python-dotenv==1.0.1
+
+# --- background tasks / scheduling ---
+celery==5.3.6
+redis==5.0.4
+
+# --- observabilidad ---
+opentelemetry-api==1.25.0
+opentelemetry-sdk==1.25.0
+opentelemetry-exporter-otlp==1.25.0
+loguru==0.7.2
+
+# --- testing ---
+pytest==8.2.0
+pytest-asyncio==0.23.6
+httpx==0.27.0
+coverage==7.5.3
+
+# --- misc ---
+orjson==3.10.4            # super-fast JSON
