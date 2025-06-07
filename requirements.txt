@@ -2,7 +2,7 @@
 fastapi==0.115.2
 uvicorn[standard]==0.23.2
 pydantic==2.7.1
-python-multipart==0.0.9
+python-multipart==0.0.18
 
 # --- persistence ---
 SQLAlchemy==2.0.30
