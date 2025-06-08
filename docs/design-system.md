@@ -56,3 +56,19 @@ En este ejemplo `atoms/Button` aparece bajo la sección **atoms**. Usa la jerarq
 
 Cada propiedad expuesta por un componente debe documentarse con controles de Storybook (MDX o CSF). Así se mantiene una referencia interactiva y organizada.
 
+## Paleta de colores corporativa
+
+La interfaz usa un tema basado en Material UI. La paleta garantiza contraste suficiente y mantiene el lienzo (`canvas`) en `#fdf0d5`.
+
+| Propósito  | Hex      |
+|------------|---------|
+| Primario   | `#c1121f` |
+| Secundario | `#669bbc` |
+| Info       | `#003049` |
+| Error      | `#780000` |
+| Canvas     | `#fdf0d5` |
+
+## Accesibilidad de color
+
+Toda combinación de texto y fondo debe cumplir con el ratio mínimo de contraste **4.5:1** según las pautas [WCAG 2.2 AA](https://www.w3.org/WAI/WCAG22/). El tema define `contrastText` para cada color a fin de facilitar este cumplimiento.
+
