@@ -15,6 +15,7 @@ docs(agents): aclara flujo de revisión para IA Codex
 2. PR gatilla CI (lint + tests + build).
 3. Min. 1 review humano + 1 review IA (`/review`).
 4. Merge squash; `develop` se despliega a **staging** automáticamente.
+5. Ramas protegidas: `main` y `develop` requieren PR con CI verde.
 
 ### 3. Front-end
 | Requisito | Norma |

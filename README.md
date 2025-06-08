@@ -87,12 +87,17 @@ uvicorn app.main:app --reload  # http://localhost:8000/docs
 | Staging | `stage.one-erp.internal`   | QA, demo a negocio     |
 | Prod    | `erp.midominio.com`        | Usuarios finales       |
 
+## Ramas
+- `main` → producción.
+- `develop` → integración continua. Todas las PR se abren contra esta rama.
+
+
 ## Contribuir
 1. Crea un issue o elige uno del backlog.
 2. Haz fork / branch.
 3. Sigue Conventional Commits.
-4. PR contra `develop` (no `main`).
-5. Espera CI + review.
+4. PR contra `develop` (excepto hotfix directo a `main`).
+5. CI verde + al menos 1 review antes de merge.
 
 ## Licencia
 MIT © 2025 One Dentsu – Data & Creative
