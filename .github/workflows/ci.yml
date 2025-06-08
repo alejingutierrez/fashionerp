@@ -18,7 +18,9 @@ jobs:
           cache: 'pnpm'
 
       - name: Enable pnpm
-        run: corepack enable
+        run: |
+          corepack enable
+          corepack prepare pnpm@9.15.4 --activate
 
       - uses: actions/setup-python@v5
         with:
