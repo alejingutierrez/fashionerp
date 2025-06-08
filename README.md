@@ -1,2 +1,105 @@
-# fashionerp
-ERP de moda pensando en ser el único sistema que una empresa de moda necesita para gestionar su negocio físico y digital 
+# One ERP – Retail & E-commerce Suite
+
+> *Multi-tenant SaaS que integra ventas, inventario, contabilidad, POS, CRM y e-commerce.*
+
+---
+
+## Tabla de Contenido
+1. [Visión](#visión)
+2. [Arquitectura](#arquitectura)
+3. [Requisitos previos](#requisitos-previos)
+4. [Instalación rápida](#instalación-rápida)
+5. [Scripts npm / CLI](#scripts-npm--cli)
+6. [Estrategia Docker](#estrategia-docker)
+7. [Entornos](#entornos)
+8. [Contribuir](#contribuir)
+9. [Licencia](#licencia)
+
+---
+
+## Visión
+Un solo sistema para operar **retail omnicanal** en LATAM, con capas de IA (MMM, forecasting) y cumplimiento fiscal local (DIAN / Nómina electrónica).
+
+## Arquitectura
+```mermaid
+graph TD
+ subgraph Frontend (React 19 + MUI 6)
+  A[SPA] -->|REST| B((API Gateway))
+ end
+ subgraph Backend (FastAPI)
+  B --> C[Auth & RBAC]
+  B --> D[Dominios: Ventas · Inventario · Contabilidad ...]
+  D -->|SQLAlchemy| E[(PostgreSQL)]
+ end
+ subgraph Infra
+  E --> F{Backups S3}
+  B --> G[OpenTelemetry ➜ Grafana]
+ end
+```
+
+## Requisitos previos
+
+| Herramienta   | Versión mínima | Nota                        |
+|---------------|----------------|-----------------------------|
+| Node.js       | 20 LTS         | Front-end build (Vite)      |
+| Python        | 3.12           | ASGI FastAPI                |
+| Docker        | 24.x           | Contenedores                |
+| Docker Compose| 2.20           | Entorno dev                 |
+
+## Instalación rápida
+```bash
+git clone https://github.com/<org>/fashionerp.git
+cd fashionerp
+
+# Front-end
+cd frontend
+npm ci            # usa package-lock.json
+npm run dev       # http://localhost:3000
+
+# Back-end
+cd ../backend
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload  # http://localhost:8000/docs
+```
+
+## Scripts npm / CLI
+
+| Comando                                           | Descripción                               |
+|---------------------------------------------------|-------------------------------------------|
+| `npm run dev`                                     | Arranca Vite con HMR en localhost:3000    |
+| `npm run build`                                   | Compila la SPA en `dist/`                 |
+| `npm run storybook`                               | Doc y sandbox de componentes (:6006)      |
+| `pytest -q`                                       | Ejecuta tests backend                     |
+| `docker-compose -f docker-compose.dev.yml up`     | Entorno completo (db, redis, front, back) |
+
+## Estrategia Docker
+- Multi-stage build para imágenes pequeñas.
+- Separación: frontend, backend, db, redis, storybook.
+- Volúmenes montados solo en dev para hot-reload.
+- Variables de entorno declaradas en `.env` (no commit real keys).
+
+## Entornos
+
+| Entorno | URL                        | Objetivo               |
+|---------|----------------------------|------------------------|
+| Local   | `localhost`                | Desarrollo diario      |
+| Staging | `stage.one-erp.internal`   | QA, demo a negocio     |
+| Prod    | `erp.midominio.com`        | Usuarios finales       |
+
+## Contribuir
+1. Crea un issue o elige uno del backlog.
+2. Haz fork / branch.
+3. Sigue Conventional Commits.
+4. PR contra `develop` (no `main`).
+5. Espera CI + review.
+
+## Licencia
+MIT © 2025 One Dentsu – Data & Creative
+
+---
+
+### ¿Algo más?
+
+*Si necesitas que genere los `docker-compose*.yml`, `.env.example` o scripts de análisis de calidad, dímelo y los preparo en la próxima iteración.*
+
