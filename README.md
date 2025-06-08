@@ -46,6 +46,8 @@ graph TD
 | Docker        | 24.x           | Contenedores                |
 | Docker Compose| 2.20           | Entorno dev                 |
 
+Las versiones de referencia se definen en `.nvmrc` (Node 20 LTS) y `.python-version` (Python 3.12).
+
 ## Instalación rápida
 ```bash
 git clone https://github.com/<org>/fashionerp.git
