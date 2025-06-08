@@ -39,6 +39,7 @@ docs(agents): aclara flujo de revisión para IA Codex
 * CI = GitHub Actions: lint → tests → build Docker → push a ECR (staging).
 * Secrets via GitHub Secrets (nunca en el repo).
 * RPO ≤ 15 min, RTO ≤ 30 min (ver runbooks en `/docs/dr`).
+* Gestor Node = PNPM; habilita `corepack` para versiones homogéneas.
 
 ### 6. Estilo de código
 * **Python**: `ruff` + `black --line-length 88` + `isort`.
@@ -55,4 +56,4 @@ docs(agents): aclara flujo de revisión para IA Codex
 ---
 
 > **Actualiza este documento** cada vez que cambie una norma o se añada tooling nuevo.  
-> Última revisión: 2025-06-07
+> Última revisión: 2025-06-08

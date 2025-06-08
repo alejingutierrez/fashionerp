@@ -9,7 +9,7 @@
 2. [Arquitectura](#arquitectura)
 3. [Requisitos previos](#requisitos-previos)
 4. [Instalación rápida](#instalación-rápida)
-5. [Scripts npm / CLI](#scripts-npm--cli)
+5. [Scripts pnpm / CLI](#scripts-pnpm--cli)
 6. [Estrategia Docker](#estrategia-docker)
 7. [Entornos](#entornos)
 8. [Contribuir](#contribuir)
@@ -55,8 +55,8 @@ cd fashionerp
 
 # Front-end
 cd frontend
-npm ci            # usa package-lock.json
-npm run dev       # http://localhost:3000
+pnpm install            # instala dependencias
+pnpm run dev       # http://localhost:3000
 
 # Back-end
 cd ../backend
@@ -65,13 +65,13 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload  # http://localhost:8000/docs
 ```
 
-## Scripts npm / CLI
+## Scripts pnpm / CLI
 
 | Comando                                           | Descripción                               |
 |---------------------------------------------------|-------------------------------------------|
-| `npm run dev`                                     | Arranca Vite con HMR en localhost:3000    |
-| `npm run build`                                   | Compila la SPA en `dist/`                 |
-| `npm run storybook`                               | Doc y sandbox de componentes (:6006)      |
+| `pnpm run dev`                                     | Arranca Vite con HMR en localhost:3000    |
+| `pnpm run build`                                   | Compila la SPA en `dist/`                 |
+| `pnpm run storybook`                               | Doc y sandbox de componentes (:6006)      |
 | `pytest -q`                                       | Ejecuta tests backend                     |
 | `docker-compose -f docker-compose.dev.yml up`     | Entorno completo (db, redis, front, back) |
 
