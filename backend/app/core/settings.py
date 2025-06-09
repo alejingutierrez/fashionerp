@@ -1,3 +1,4 @@
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -9,7 +10,14 @@ class Settings(BaseSettings):
     app_name: str = "Fashion ERP API"
     log_level: str = "INFO"
     log_json: bool = False
-    allowed_origins: list[str] = ["http://localhost:3000"]
+    allowed_origins: list[str] = Field(default_factory=list)
+
+    @field_validator("allowed_origins", mode="before")
+    @classmethod
+    def split_origins(cls, v: str | list[str]) -> list[str]:
+        if isinstance(v, str):
+            return [origin.strip() for origin in v.split(",") if origin.strip()]
+        return v
 
 
 settings = Settings()  # type: ignore[misc]
