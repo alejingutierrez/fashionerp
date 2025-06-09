@@ -31,7 +31,7 @@ docs(agents): aclara flujo de revisión para IA Codex
 * **Pydantic v2** para validación; usa `field_validators` cuando aplique.
 * DB **PostgreSQL** → SQLAlchemy 2 (async); migraciones = Alembic.
 * Seguridad: OAuth2 + JWT; hash de pass = `bcrypt`.
-* CORS activado para `http://localhost:3000` y dominios configurados.
+* CORS activado solo para orígenes listados en `.env` (`ALLOWED_ORIGINS`).
 * Observabilidad OTel: cada request genera trace-id propagado a front.
 * Dependencias separadas: `requirements.txt` (runtime) y `requirements.dev.txt` (lint, tests, mypy).
 
