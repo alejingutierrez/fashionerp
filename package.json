@@ -12,6 +12,8 @@
     "husky": "^9.0.11"
   },
   "scripts": {
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "storybook": "pnpm --filter ./frontend storybook",
+    "build-storybook": "pnpm --filter ./frontend build-storybook"
   }
 }
