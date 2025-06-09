@@ -12,15 +12,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 9.15.4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
 
-      - name: Enable pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@9.15.4 --activate
+      - name: Enable corepack
+        run: corepack enable
 
       - uses: actions/setup-python@v5
         with:
@@ -30,13 +32,13 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Lint
-        run: pnpm -r lint --if-present
+        run: pnpm -r --if-present lint
 
       - name: Backend dependencies
         run: pip install -r requirements.txt
 
       - name: Tests frontend
-        run: pnpm -r test --if-present
+        run: pnpm -r --if-present test
 
       - name: Tests backend
         run: pytest -q
