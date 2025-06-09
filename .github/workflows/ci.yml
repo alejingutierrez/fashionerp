@@ -35,7 +35,7 @@ jobs:
         run: pnpm -r --if-present lint
 
       - name: Backend dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements.txt -r requirements.dev.txt
 
       - name: Tests frontend
         run: pnpm -r --if-present test
