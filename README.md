@@ -75,6 +75,14 @@ uvicorn app.main:app --reload  # http://localhost:8000/docs
 | `pytest -q`                                       | Ejecuta tests backend                     |
 | `docker-compose -f docker-compose.dev.yml up`     | Entorno completo (db, redis, front, back) |
 
+## Ejecutar pruebas
+
+```bash
+cd backend
+pytest -q
+```
+
+
 ## Estrategia Docker
 - Multi-stage build para imágenes pequeñas.
 - Separación: frontend, backend, db, redis, storybook.
