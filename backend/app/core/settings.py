@@ -8,6 +8,7 @@ class Settings(BaseSettings):
 
     app_name: str = "Fashion ERP API"
     log_level: str = "INFO"
+    log_json: bool = False
     allowed_origins: list[str] = ["http://localhost:3000"]
 
 
