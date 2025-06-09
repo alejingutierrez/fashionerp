@@ -33,6 +33,7 @@ docs(agents): aclara flujo de revisión para IA Codex
 * Seguridad: OAuth2 + JWT; hash de pass = `bcrypt`.
 * CORS activado para `http://localhost:3000` y dominios configurados.
 * Observabilidad OTel: cada request genera trace-id propagado a front.
+* Dependencias separadas: `requirements.txt` (runtime) y `requirements.dev.txt` (lint, tests, mypy).
 
 ### 5. Infra & Dev Ops
 * Docker: un proceso por contenedor; `docker-compose -f docker-compose.dev.yml up`.

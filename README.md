@@ -61,7 +61,7 @@ pnpm run dev       # http://localhost:3000
 # Back-end
 cd ../backend
 python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements.txt -r requirements.dev.txt
 uvicorn app.main:app --reload  # http://localhost:8000/docs
 ```
 
