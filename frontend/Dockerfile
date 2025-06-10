@@ -1,38 +1,40 @@
-# Stage 1: Build the application
+# ──────────────────────────────
+# Stage 1 ─ Build de la aplicación
+# ──────────────────────────────
 FROM node:20-alpine AS builder
 
-# Set working directory
+# Carpeta de trabajo
 WORKDIR /app
 
-# Install pnpm
+# PNPM global
 RUN npm install -g pnpm
 
-# Copy workspace manifests
+# 1) Copiamos SÓLO los archivos mínimos que determinan las dependencias
+#    para aprovechar la caché de capas de Docker.
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY frontend/package.json frontend/package.json
+COPY frontend/package.json ./frontend/package.json
 
-# Install all dependencies for the frontend package
+# 2) Instalamos dependencias **solo** del paquete frontend
 RUN pnpm install --frozen-lockfile=false --prod=false --filter ./frontend...
 
-# Copy the rest of the frontend application
+# 3) Copiamos el resto del código fuente del frontend
 COPY frontend ./frontend
 
-# Build the application
+# 4) Build de React
 WORKDIR /app/frontend
-RUN mv public/index.html .
+RUN mv public/index.html .     # si tu build lo necesita
 RUN pnpm run build
 
-# Stage 2: Serve the application
+# ──────────────────────────────
+# Stage 2 ─ Servir la aplicación
+# ──────────────────────────────
 FROM nginx:1.27-alpine AS production
 
-# Copy nginx config
+# Configuración de Nginx
 COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy built assets from builder
+# Archivos estáticos generados en el build
 COPY --from=builder /app/frontend/dist /usr/share/nginx/html
 
-# Expose port 80
 EXPOSE 80
-
-# Start nginx
 CMD ["nginx", "-g", "daemon off;"]
