@@ -5,3 +5,4 @@ Este directorio contiene la documentación general del proyecto. Consulta `agent
 - [Estrategia de enrutamiento y estado](routing-estado.md)
 - [Dependencias backend](backend-dependencies.md)
 - [Versionado de API](api-versioning.md)
+- [Flujo de seguridad](security-flow.md)
