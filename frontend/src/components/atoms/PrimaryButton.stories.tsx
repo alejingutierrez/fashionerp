@@ -12,6 +12,12 @@ const meta: Meta<typeof PrimaryButton> = {
     onClick: { action: 'clicked' },
     startIcon: { control: false },
     endIcon: { control: false },
+    /* Controles adicionales para estados de carga */
+    loadingPosition: {
+      control: 'select',
+      options: ['center', 'start', 'end'],
+    },
+    loadingText: { control: 'text' },
   },
 };
 export default meta;
@@ -30,4 +36,12 @@ export const WithIcon: Story = {
 
 export const Loading: Story = {
   args: { loading: true },
+};
+
+export const LoadingStart: Story = {
+  args: { loading: true, loadingPosition: 'start', children: 'Save' },
+};
+
+export const LoadingWithText: Story = {
+  args: { loading: true, loadingText: 'Saving...' },
 };

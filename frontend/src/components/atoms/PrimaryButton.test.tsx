@@ -41,4 +41,25 @@ describe('PrimaryButton', () => {
     btn.click();
     expect(handleClick).not.toHaveBeenCalled();
   });
+
+  it('renders spinner at start when loadingPosition="start"', () => {
+    renderWithTheme(
+      <PrimaryButton loading loadingPosition="start">
+        Start
+      </PrimaryButton>,
+    );
+    const btn = screen.getByRole('button');
+    // El spinner de MUI (CircularProgress) aparece como un SVG dentro del botón
+    expect(btn.querySelector('svg')).toBeInTheDocument();
+    expect(screen.getByRole('progressbar')).toBeInTheDocument();
+  });
+
+  it('renders loadingText when provided', () => {
+    renderWithTheme(
+      <PrimaryButton loading loadingText="Saving...">
+        Save
+      </PrimaryButton>,
+    );
+    expect(screen.getByText('Saving...')).toBeInTheDocument();
+  });
 });
