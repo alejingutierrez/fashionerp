@@ -11,9 +11,10 @@
 4. [Instalación rápida](#instalación-rápida)
 5. [Scripts pnpm / CLI](#scripts-pnpm--cli)
 6. [Estrategia Docker](#estrategia-docker)
-7. [Entornos](#entornos)
-8. [Contribuir](#contribuir)
-9. [Licencia](#licencia)
+7. [Variables de entorno](#variables-de-entorno)
+8. [Entornos](#entornos)
+9. [Contribuir](#contribuir)
+10. [Licencia](#licencia)
 
 ---
 
@@ -88,6 +89,15 @@ pytest -q
 - Separación: frontend, backend, db, redis, storybook.
 - Volúmenes montados solo en dev para hot-reload.
 - Variables de entorno declaradas en `.env` (no commit real keys).
+
+## Variables de entorno
+1. Copia `\.env.example` a `\.env` en la raíz del proyecto.
+2. Ajusta los valores de API, base de datos y claves según tu entorno.
+
+```bash
+cp .env.example .env
+# luego edita .env
+```
 
 ## Entornos
 
