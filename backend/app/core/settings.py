@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     log_json: bool = False
     allowed_origins: list[str] = Field(default_factory=list)
+    database_url: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/app"
 
     @field_validator("allowed_origins", mode="before")
     @classmethod
