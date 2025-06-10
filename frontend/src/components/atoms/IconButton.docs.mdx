@@ -1,0 +1,13 @@
+import { Meta, Story, ArgsTable } from '@storybook/blocks';
+import * as Stories from './IconButton.stories';
+import { IconButton } from './IconButton';
+
+<Meta of={Stories} />
+
+# IconButton
+
+Botón circular que contiene solo un ícono. Recuerda añadir `aria-label` cuando el ícono no describa la acción por sí mismo.
+
+<Story id="atoms-iconbutton--default" />
+
+<ArgsTable of={IconButton} story="Default" />
