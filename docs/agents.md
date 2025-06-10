@@ -41,6 +41,7 @@ docs(agents): aclara flujo de revisión para IA Codex
 * Secrets via GitHub Secrets (nunca en el repo).
 * RPO ≤ 15 min, RTO ≤ 30 min (ver runbooks en `/docs/dr`).
 * Gestor Node = PNPM; habilita `corepack` para versiones homogéneas.
+* Dependabot alerts activos para actualizar dependencias de Node y Python.
 
 ### 6. Estilo de código
 * **Python**: `ruff` + `black --line-length 88` + `isort`.
