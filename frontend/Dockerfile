@@ -6,23 +6,23 @@ FROM node:20-alpine AS builder
 # Carpeta de trabajo
 WORKDIR /app
 
-# PNPM global
+# Instalar PNPM globalmente
 RUN npm install -g pnpm
 
-# 1) Copiamos SÓLO los archivos mínimos que determinan las dependencias
-#    para aprovechar la caché de capas de Docker.
+# 1 · Copiar manifests del workspace (monorepo) y el package del frontend
+#    Esto permite a PNPM resolver workspaces y, a la vez, maximiza la caché Docker.
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY frontend/package.json ./frontend/package.json
 
-# 2) Instalamos dependencias **solo** del paquete frontend
+# 2 · Instalar dependencias **solo** para el paquete frontend
 RUN pnpm install --frozen-lockfile=false --prod=false --filter ./frontend...
 
-# 3) Copiamos el resto del código fuente del frontend
+# 3 · Copiar el resto del código fuente del frontend
 COPY frontend ./frontend
 
-# 4) Build de React
+# 4 · Build de React
 WORKDIR /app/frontend
-RUN mv public/index.html .     # si tu build lo necesita
+RUN mv public/index.html .   # Elimínalo si tu build ya no lo necesita
 RUN pnpm run build
 
 # ──────────────────────────────
