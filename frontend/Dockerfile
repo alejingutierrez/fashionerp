@@ -7,20 +7,19 @@ WORKDIR /app
 # Install pnpm
 RUN npm install -g pnpm
 
-# Copy package files first (for better layer caching)
-COPY frontend/package.json ./
-COPY frontend/pnpm-lock.yaml* ./
+# Copy workspace manifests
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY frontend/package.json frontend/package.json
 
-# Install all dependencies including dev dependencies
-RUN pnpm install --frozen-lockfile=false --prod=false
+# Install all dependencies for the frontend package
+RUN pnpm install --frozen-lockfile=false --prod=false --filter ./frontend...
 
-# Copy the rest of the application
-COPY frontend/ .
-
-# Move index.html to the root directory for Vite
-RUN mv public/index.html .
+# Copy the rest of the frontend application
+COPY frontend ./frontend
 
 # Build the application
+WORKDIR /app/frontend
+RUN mv public/index.html .
 RUN pnpm run build
 
 # Stage 2: Serve the application
@@ -30,7 +29,7 @@ FROM nginx:1.27-alpine AS production
 COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy built assets from builder
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /app/frontend/dist /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
