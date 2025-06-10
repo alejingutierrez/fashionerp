@@ -9,7 +9,7 @@ RUN npm install -g pnpm
 
 # Copy package files first (for better layer caching)
 COPY frontend/package.json ./
-COPY frontend/pnpm-lock.yaml* ./
+COPY pnpm-lock.yaml* ./
 
 # Install all dependencies including dev dependencies
 RUN pnpm install --frozen-lockfile=false --prod=false
