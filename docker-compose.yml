@@ -2,15 +2,19 @@ version: '3.9'
 
 services:
   frontend:
-    build: ./frontend
-    volumes:
-      - ./frontend:/app
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
     ports:
       - "3000:3000"
-    command: pnpm run dev
+    environment:
+      - NODE_ENV=development
+    command: sh -c "pnpm install && pnpm run dev"
 
   backend:
-    build: ./backend
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
     volumes:
       - ./backend:/app
     ports:
