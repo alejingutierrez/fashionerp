@@ -6,6 +6,11 @@ export default {
     options: {},
   },
   webpackFinal: async (config) => {
+    config.resolve = config.resolve || {};
+    config.resolve.alias = {
+      ...(config.resolve.alias || {}),
+      '@mui/material/utils': '@mui/material/utils/index.js',
+    };
     config.module.rules.push({
       test: /\.(ts|tsx)$/,
       use: [
