@@ -73,7 +73,7 @@ uvicorn app.main:app --reload  # http://localhost:8000/docs
 | `pnpm run build`                                   | Compila la SPA en `dist/`                 |
 | `pnpm run storybook`                               | Doc y sandbox de componentes (:6006)      |
 | `pytest -q`                                       | Ejecuta tests backend                     |
-| `docker-compose -f docker-compose.dev.yml up`     | Entorno completo (db, redis, front, back) |
+| `docker-compose -f docker-compose.dev.yml up`     | Entorno completo (db, front, back) |
 
 ## Ejecutar pruebas
 
