@@ -49,6 +49,7 @@ describe('PrimaryButton', () => {
       </PrimaryButton>,
     );
     const btn = screen.getByRole('button');
+    // El spinner de MUI (CircularProgress) aparece como un SVG dentro del botón
     expect(btn.querySelector('svg')).toBeInTheDocument();
     expect(screen.getByRole('progressbar')).toBeInTheDocument();
   });

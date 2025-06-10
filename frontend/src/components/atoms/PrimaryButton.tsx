@@ -4,7 +4,7 @@ import Button, { ButtonProps } from './Button';
 
 export interface PrimaryButtonProps extends ButtonProps {
   /**
-   * Muestra un spinner y deshabilita la interacción.
+   * Activa el modo de carga: muestra un spinner y deshabilita la interacción.
    */
   loading?: boolean;
   /**
@@ -21,7 +21,7 @@ export interface PrimaryButtonProps extends ButtonProps {
 }
 
 /**
- * Botón primario que muestra la acción principal de cada vista.
+ * Botón primario que representa la acción principal de cada vista.
  */
 export function PrimaryButton({
   children,
@@ -35,6 +35,7 @@ export function PrimaryButton({
   ...props
 }: PropsWithChildren<PrimaryButtonProps>) {
   const spinner = <CircularProgress size={20} color="inherit" />;
+  // Si hay texto de carga y el botón está cargando, ese texto sustituye al children
   const content = loading && loadingText ? loadingText : children;
 
   return (
@@ -47,7 +48,7 @@ export function PrimaryButton({
       endIcon={loading && loadingPosition === 'end' ? spinner : endIcon}
       disabled={disabled || loading}
       onClick={onClick}
-      aria-busy={loading ? true : undefined}
+      aria-busy={loading || undefined}
       {...props}
     >
       {loading && loadingPosition === 'center' ? (

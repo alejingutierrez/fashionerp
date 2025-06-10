@@ -12,6 +12,7 @@ const meta: Meta<typeof PrimaryButton> = {
     onClick: { action: 'clicked' },
     startIcon: { control: false },
     endIcon: { control: false },
+    /* Controles adicionales para estados de carga */
     loadingPosition: {
       control: 'select',
       options: ['center', 'start', 'end'],
