@@ -6,3 +6,4 @@ export { IconButton } from './IconButton';
 export { Link } from './Link';
 export { TextField } from './TextField';
 export { TextArea } from './TextArea';
+export { Select } from './Select';
