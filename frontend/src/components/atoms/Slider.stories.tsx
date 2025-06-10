@@ -5,7 +5,7 @@ const meta: Meta<typeof Slider> = {
   title: 'Atoms/Slider',
   component: Slider,
   args: {
-    value: 30,
+    defaultValue: 30,
     min: 0,
     max: 100,
     step: 1,
@@ -13,6 +13,7 @@ const meta: Meta<typeof Slider> = {
   argTypes: {
     onChange: { action: 'changed' },
     value: { control: 'object' },
+    defaultValue: { control: 'object' },
     marks: { control: 'boolean' },
     disabled: { control: 'boolean' },
   },
@@ -28,7 +29,7 @@ export const Disabled: Story = {
 };
 
 export const Range: Story = {
-  args: { value: [20, 80] },
+  args: { defaultValue: [20, 80] },
 };
 
 export const WithMarks: Story = {

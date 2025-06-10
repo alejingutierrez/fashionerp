@@ -8,6 +8,9 @@ import { Slider } from './Slider';
 
 Control deslizante para seleccionar un valor dentro de un rango.
 
+Para un control no controlado utiliza `defaultValue`. Si usas la prop
+`value` debes actualizarla en `onChange` para que el deslizador se mueva.
+
 <Story id="atoms-slider--default" />
 
 <ArgsTable of={Slider} story="Default" />
