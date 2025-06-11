@@ -9,3 +9,4 @@ export { TextArea } from './TextArea';
 export { Select } from './Select';
 export { Slider } from './Slider';
 export { Icon } from './Icon';
+export { Avatar } from './Avatar';
