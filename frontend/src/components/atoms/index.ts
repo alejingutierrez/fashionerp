@@ -8,3 +8,4 @@ export { TextField } from './TextField';
 export { TextArea } from './TextArea';
 export { Select } from './Select';
 export { Slider } from './Slider';
+export { Icon } from './Icon';
