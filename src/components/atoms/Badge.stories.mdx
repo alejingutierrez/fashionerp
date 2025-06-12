@@ -1,0 +1,14 @@
+import { Meta, Story, ArgsTable } from '@storybook/blocks';
+import { Badge } from './Badge';
+import * as Stories from './Badge.stories';
+
+<Meta of={Stories} />
+
+# Badge
+
+Small indicator for counts or status. It wraps another element and displays
+content like numbers or dots in a corner.
+
+<Story id="atoms-badge--default" />
+
+<ArgsTable of={Badge} story="Default" />
