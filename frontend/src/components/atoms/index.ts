@@ -15,3 +15,4 @@ export { Chip } from './Chip';
 export { Tooltip } from './Tooltip';
 export { Alert } from './Alert';
 export { Snackbar } from './Snackbar';
+export { Switch } from './Switch';
