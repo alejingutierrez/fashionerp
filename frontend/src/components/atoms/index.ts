@@ -18,4 +18,3 @@ export { Snackbar } from './Snackbar';
 export { Switch } from './Switch';
 export { Checkbox } from './Checkbox';
 export { RadioButton } from './RadioButton';
-export { Label } from './Label';
