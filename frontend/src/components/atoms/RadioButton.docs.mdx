@@ -1,0 +1,13 @@
+import { Meta, Story, ArgsTable } from '@storybook/blocks';
+import * as Stories from './RadioButton.stories';
+import { RadioButton } from './RadioButton';
+
+<Meta of={Stories} />
+
+# RadioButton
+
+Permite seleccionar una opción dentro de un grupo. Asigna el mismo `name` a varios radios para que sean mutuamente excluyentes.
+
+<Story id="atoms-radiobutton--unchecked" />
+
+<ArgsTable of={RadioButton} story="Unchecked" />
