@@ -26,6 +26,8 @@ docs(agents): aclara flujo de revisión para IA Codex
 | Storybook | toda nueva prop documentada con MDX & Controls |
 | Tests | React Testing Library + Jest (≥ 80 % lines) |
 
+> Antes de crear una molécula revisa los átomos existentes y reutiliza el más cercano. Si no hay un átomo equivalente, crea uno nuevo siguiendo la estructura de `atoms/`.
+
 ### 4. Back-end
 * **FastAPI** “REST-first”; versión en ruta `/api/v1/*`.
 * **Pydantic v2** para validación; usa `field_validators` cuando aplique.
@@ -58,4 +60,4 @@ docs(agents): aclara flujo de revisión para IA Codex
 ---
 
 > **Actualiza este documento** cada vez que cambie una norma o se añada tooling nuevo.  
-> Última revisión: 2025-06-08
+> Última revisión: 2025-06-14
