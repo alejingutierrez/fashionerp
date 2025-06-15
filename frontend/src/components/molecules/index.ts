@@ -3,3 +3,4 @@ export { LabeledSelectField } from './LabeledSelectField';
 export { LabeledNumberField } from './LabeledNumberField';
 export { LabeledDateField } from './LabeledDateField';
 export { LabeledCurrencyField } from './LabeledCurrencyField';
+export { RadioButtonGroup } from './RadioButtonGroup';
