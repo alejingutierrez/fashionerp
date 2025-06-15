@@ -20,3 +20,4 @@ export { Checkbox } from './Checkbox';
 export { RadioButton } from './RadioButton';
 export { NumberInput } from './NumberInput';
 export { DatePicker } from './DatePicker';
+export { CurrencyField } from './CurrencyField';
