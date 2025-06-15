@@ -5,3 +5,4 @@ export { LabeledDateField } from './LabeledDateField';
 export { LabeledCurrencyField } from './LabeledCurrencyField';
 export { RadioButtonGroup } from './RadioButtonGroup';
 export { ToggleSwitchField } from './ToggleSwitchField';
+export { SearchBar } from './SearchBar';
