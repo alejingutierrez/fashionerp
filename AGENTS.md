@@ -25,7 +25,7 @@ docs(agents): aclara flujo de revisión para IA Codex
 | Requisito     | Norma                                                                                                                                                                           |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Componentes   | Atomic Design (atoms → molecules → organisms → templates → pages)                                                                                                               |
-| Reutilización | Preferir añadir variantes o estados a átomos existentes en lugar de crear nuevos átomos |
+| Reutilización | Ajustar primero los átomos existentes (añadiendo variantes o estados) antes de crear uno nuevo |
 | Jerarquía     | Las páginas se construyen a partir de módulos; un módulo agrupa múltiples componentes, cada componente se forma con organismos, los organismos con moléculas y éstas con átomos |
 | Styling       | solo MUI v6 (`sx` / styled API); **nunca CSS suelto**                                                                                                                           |
 | Accesibilidad | score Lighthouse ≥ 90 (WCAG 2.2 AA)                                                                                                                                             |

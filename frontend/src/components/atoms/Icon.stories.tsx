@@ -10,7 +10,16 @@ const meta: Meta<typeof Icon> = {
   argTypes: {
     name: {
       control: 'select',
-      options: ['search', 'user', 'settings', 'menu', 'close', 'delete', 'favorite'],
+      options: [
+        'search',
+        'user',
+        'settings',
+        'menu',
+        'close',
+        'delete',
+        'favorite',
+        'info',
+      ],
     },
     color: {
       control: 'select',
@@ -39,6 +48,7 @@ export const Gallery: Story = {
       <Icon name="close" />
       <Icon name="delete" color="error" />
       <Icon name="favorite" color="secondary" />
+      <Icon name="info" color="info" />
     </div>
   ),
 };
