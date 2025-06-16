@@ -14,3 +14,4 @@ export { UserInfoDisplay } from './UserInfoDisplay';
 export { StatusBadgeDisplay } from './StatusBadgeDisplay';
 export { IconWithBadge } from './IconWithBadge';
 export { StatWithIcon } from './StatWithIcon';
+export { ProgressWithLabel } from './ProgressWithLabel';
