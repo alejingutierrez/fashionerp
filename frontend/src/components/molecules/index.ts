@@ -11,3 +11,4 @@ export { DateRangePicker } from './DateRangePicker';
 export { AvatarName } from './AvatarName';
 export { AvatarStatus } from './AvatarStatus';
 export { UserInfoDisplay } from './UserInfoDisplay';
+export { StatusBadgeDisplay } from './StatusBadgeDisplay';
