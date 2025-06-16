@@ -9,3 +9,4 @@ export { SearchBar } from './SearchBar';
 export { NumberStepper } from './NumberStepper';
 export { DateRangePicker } from './DateRangePicker';
 export { AvatarName } from './AvatarName';
+export { AvatarStatus } from './AvatarStatus';
