@@ -7,6 +7,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import InfoIcon from '@mui/icons-material/Info';
 
 const ICONS = {
   search: SearchIcon,
@@ -16,6 +17,7 @@ const ICONS = {
   close: CloseIcon,
   delete: DeleteIcon,
   favorite: FavoriteIcon,
+  info: InfoIcon,
 };
 
 export type IconName = keyof typeof ICONS;
