@@ -17,3 +17,4 @@ export { StatWithIcon } from './StatWithIcon';
 export { ProgressWithLabel } from './ProgressWithLabel';
 export { InfoTooltipIcon } from './InfoTooltipIcon';
 export { IconLabelButton } from './IconLabelButton';
+export { ProductListItem } from './ProductListItem';
