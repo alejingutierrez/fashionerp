@@ -17,6 +17,12 @@ const STATUS_COLOR_MAP = {
   busy: 'error',
 } as const;
 
+const AVATAR_SIZE_MAP = {
+  small: 32,
+  medium: 40,
+  large: 64,
+} as const;
+
 /**
  * Muestra un avatar con un badge que refleja el estado del usuario.
  */
@@ -43,6 +49,8 @@ export function AvatarStatus({
     'left' | 'right',
   ];
 
+  const dotSize = Math.round((AVATAR_SIZE_MAP[size] ?? 40) * 0.35);
+
   return (
     <Badge
       content={0}
@@ -51,6 +59,7 @@ export function AvatarStatus({
       color={STATUS_COLOR_MAP[status]}
       anchorOrigin={{ vertical, horizontal }}
       showZero
+      slotProps={{ badge: { sx: { height: dotSize, minWidth: dotSize } } }}
     >
       <Avatar alt={name} src={src} size={size} {...avatarProps}>
         {initials}

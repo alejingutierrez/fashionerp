@@ -39,4 +39,13 @@ describe('AvatarStatus', () => {
     const avatar = container.querySelector('.MuiAvatar-root') as HTMLElement;
     expect(avatar).toHaveStyle({ width: '64px', height: '64px' });
   });
+
+  it('renders larger badge dot', () => {
+    const { container } = renderWithTheme(
+      <AvatarStatus name="Fran" status="online" size="medium" />,
+    );
+    const badge = container.querySelector('.MuiBadge-badge') as HTMLElement;
+    const styles = window.getComputedStyle(badge);
+    expect(styles.height).toBe('14px');
+  });
 });
