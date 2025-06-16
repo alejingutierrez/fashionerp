@@ -7,3 +7,4 @@ export { RadioButtonGroup } from './RadioButtonGroup';
 export { ToggleSwitchField } from './ToggleSwitchField';
 export { SearchBar } from './SearchBar';
 export { NumberStepper } from './NumberStepper';
+export { DateRangePicker } from './DateRangePicker';
