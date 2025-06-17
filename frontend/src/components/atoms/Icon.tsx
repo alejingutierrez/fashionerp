@@ -8,6 +8,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import InfoIcon from '@mui/icons-material/Info';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import PercentIcon from '@mui/icons-material/Percent';
 
 const ICONS = {
   search: SearchIcon,
@@ -18,6 +20,8 @@ const ICONS = {
   delete: DeleteIcon,
   favorite: FavoriteIcon,
   info: InfoIcon,
+  offer: LocalOfferIcon,
+  percent: PercentIcon,
 };
 
 export type IconName = keyof typeof ICONS;

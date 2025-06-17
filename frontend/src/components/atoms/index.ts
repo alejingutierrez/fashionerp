@@ -22,3 +22,4 @@ export { NumberInput } from './NumberInput';
 export { DatePicker } from './DatePicker';
 export { CurrencyField } from './CurrencyField';
 export { ProgressSpinner } from './ProgressSpinner';
+export { ChipTag } from './ChipTag';
