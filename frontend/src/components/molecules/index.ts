@@ -20,3 +20,4 @@ export { IconLabelButton } from './IconLabelButton';
 export { ProductListItem } from './ProductListItem';
 export { OrderListItem } from './OrderListItem';
 export { CustomerListItem } from './CustomerListItem';
+export { InventoryStatusItem } from './InventoryStatusItem';
