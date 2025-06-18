@@ -30,3 +30,4 @@ export { BreadcrumbItem } from './BreadcrumbItem';
 export { PaginationControls } from './PaginationControls';
 export { StepIndicator } from './StepIndicator';
 export { ModalHeader } from './ModalHeader';
+export { ModalFooter } from './ModalFooter';
