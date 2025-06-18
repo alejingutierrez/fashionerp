@@ -27,3 +27,4 @@ export { CommentItem } from './CommentItem';
 export { ApprovalStepItem } from './ApprovalStepItem';
 export { NavItem } from './NavItem';
 export { BreadcrumbItem } from './BreadcrumbItem';
+export { PaginationControls } from './PaginationControls';
