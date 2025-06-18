@@ -32,3 +32,4 @@ export { StepIndicator } from './StepIndicator';
 export { ModalHeader } from './ModalHeader';
 export { ModalFooter } from './ModalFooter';
 export { DismissibleAlert } from './DismissibleAlert';
+export { FormActionGroup } from './FormActionGroup';
