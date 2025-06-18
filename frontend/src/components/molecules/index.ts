@@ -23,3 +23,4 @@ export { CustomerListItem } from './CustomerListItem';
 export { InventoryStatusItem } from './InventoryStatusItem';
 export { PromotionBadge } from './PromotionBadge';
 export { NotificationItem } from './NotificationItem';
+export { CommentItem } from './CommentItem';
