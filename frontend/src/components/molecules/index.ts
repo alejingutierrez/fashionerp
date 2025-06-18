@@ -25,3 +25,4 @@ export { PromotionBadge } from './PromotionBadge';
 export { NotificationItem } from './NotificationItem';
 export { CommentItem } from './CommentItem';
 export { ApprovalStepItem } from './ApprovalStepItem';
+export { NavItem } from './NavItem';
