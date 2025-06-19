@@ -7,6 +7,7 @@ export { RadioButtonGroup } from './RadioButtonGroup';
 export { ToggleSwitchField } from './ToggleSwitchField';
 export { SearchBar } from './SearchBar';
 export { NumberStepper } from './NumberStepper';
+export { PriceStepper } from './PriceStepper';
 export { DateRangePicker } from './DateRangePicker';
 export { AvatarName } from './AvatarName';
 export { AvatarStatus } from './AvatarStatus';
