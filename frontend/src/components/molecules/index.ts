@@ -36,3 +36,4 @@ export { DismissibleAlert } from './DismissibleAlert';
 export { FormActionGroup } from './FormActionGroup';
 export { FilterChip } from './FilterChip';
 export { TableRowItem } from './TableRowItem';
+export { StockLevelSlider } from './StockLevelSlider';
