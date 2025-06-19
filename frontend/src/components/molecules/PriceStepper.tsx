@@ -98,13 +98,15 @@ export function PriceStepper({
   const tooltipInc =
     atMax && !disabled && !readOnly ? 'Llegaste al m\u00E1ximo' : 'Aumentar \u2191';
 
+  const valueStr = value.toFixed(2);
+  const inputWidth = `calc(${valueStr.length + 2}ch)`;
+
   return (
     <Box
       display="flex"
       alignItems="center"
       gap={1}
-      width={84}
-      sx={{ opacity: disabled ? 0.4 : 1 }}
+      sx={{ opacity: disabled ? 0.4 : 1, width: 'fit-content', minWidth: 84 }}
     >
       <Tooltip title={tooltipDec}>
         <span>
@@ -132,7 +134,7 @@ export function PriceStepper({
           readOnly,
           style: { textAlign: 'center' },
         }}
-        sx={{ flexGrow: 1 }}
+        sx={{ width: inputWidth }}
       />
       <Tooltip title={tooltipInc}>
         <span>
