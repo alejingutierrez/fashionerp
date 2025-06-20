@@ -40,3 +40,4 @@ export { StockLevelSlider } from './StockLevelSlider';
 export { DiscountCheckboxGroup } from './DiscountCheckboxGroup';
 export { ImageUpload } from './ImageUpload';
 export { SnackbarAlert } from './SnackbarAlert';
+export { DualDateRangeField } from './DualDateRangeField';
