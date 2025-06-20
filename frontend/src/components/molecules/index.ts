@@ -43,3 +43,4 @@ export { SnackbarAlert } from './SnackbarAlert';
 export { DualDateRangeField } from './DualDateRangeField';
 export { StatusToggleChip } from './StatusToggleChip';
 export { CurrencySummaryRow } from './CurrencySummaryRow';
+export { ColorSwatchSelector } from './ColorSwatchSelector';
