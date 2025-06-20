@@ -1,0 +1,1 @@
+export { ProductCardGrid } from './ProductCardGrid';
