@@ -42,3 +42,4 @@ export { ImageUpload } from './ImageUpload';
 export { SnackbarAlert } from './SnackbarAlert';
 export { DualDateRangeField } from './DualDateRangeField';
 export { StatusToggleChip } from './StatusToggleChip';
+export { CurrencySummaryRow } from './CurrencySummaryRow';

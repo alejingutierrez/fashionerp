@@ -7,6 +7,8 @@ export interface CurrencyFieldProps
   value: number | '';
   /** C\u00F3digo de moneda ISO 4217 */
   currency?: string;
+  /** Locale para formatear la moneda */
+  locale?: string;
   /** Manejador de cambio con el nuevo valor num\u00E9rico o vac\u00EDo */
   onChange: (event: ChangeEvent<HTMLInputElement>, value: number | '') => void;
 }
@@ -19,6 +21,7 @@ export function CurrencyField({
   value,
   onChange,
   currency = 'USD',
+  locale = 'en-US',
   onFocus,
   onBlur,
   inputProps,
@@ -27,7 +30,7 @@ export function CurrencyField({
   const [focused, setFocused] = useState(false);
 
   const format = (val: number) =>
-    new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(val);
+    new Intl.NumberFormat(locale, { style: 'currency', currency }).format(val);
 
   const displayValue = value === '' ? '' : focused ? String(value) : format(value);
 
