@@ -16,7 +16,7 @@ const meta: Meta<typeof ProductCardGrid> = {
     products: sampleProducts,
   },
   argTypes: {
-    onPriceChange: { action: 'price changed' },
+    onAdd: { action: 'added' },
     onSelect: { action: 'selected' },
   },
 };
@@ -26,11 +26,35 @@ type Story = StoryObj<typeof ProductCardGrid>;
 
 export const Default: Story = {};
 
-export const MobileTwoColumns: Story = {
-  parameters: { viewport: { defaultViewport: 'mobile1' } },
+export const Disponible: Story = {
+  args: {
+    products: [
+      {
+        id: '1',
+        name: 'Disponible',
+        price: 20,
+        status: 'available',
+        src: 'https://placehold.co/40',
+      },
+    ],
+  },
 };
 
-export const OutOfStock: Story = {
+export const EnPromocion: Story = {
+  args: {
+    products: [
+      {
+        id: '1',
+        name: 'Promo',
+        price: 15,
+        status: 'promotion',
+        src: 'https://placehold.co/40',
+      },
+    ],
+  },
+};
+
+export const SinStock: Story = {
   args: {
     products: [
       {
@@ -43,3 +67,7 @@ export const OutOfStock: Story = {
     ],
   },
 };
+
+export const Loading: Story = { args: { loading: true } };
+
+export const GridDemo: Story = { args: { products: sampleProducts } };

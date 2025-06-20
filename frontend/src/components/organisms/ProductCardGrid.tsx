@@ -1,5 +1,6 @@
-import { Box } from '@mui/material';
-import { ProductListItem, PriceStepper, StatusBadgeDisplay } from '../molecules';
+import AddIcon from '@mui/icons-material/Add';
+import { Box, Typography, Skeleton } from '@mui/material';
+import { Avatar, IconButton, Chip, Badge } from '../atoms';
 
 export interface ProductCard {
   id: string;
@@ -13,87 +14,135 @@ export interface ProductCard {
 export interface ProductCardGridProps {
   /** Lista de productos a mostrar */
   products: ProductCard[];
-  /** Callback cuando se modifica el precio */
-  onPriceChange?: (id: string, price: number) => void;
+  /** Indica si se debe mostrar el estado de carga */
+  loading?: boolean;
+  /** Callback al agregar al carrito */
+  onAdd?: (id: string) => void;
   /** Callback al seleccionar un producto */
   onSelect?: (id: string) => void;
 }
 
 const BADGE_MAP = {
-  available: { label: undefined, status: 'success' },
-  out_of_stock: { label: 'Sin stock', status: 'error' },
-  promotion: { label: 'En promo', status: 'warning' },
+  available: { label: 'Disponible', color: 'success' },
+  out_of_stock: { label: 'Sin stock', color: 'error' },
+  promotion: { label: 'En promoción', color: 'warning' },
+  default: { label: undefined, color: 'default' },
 } as const;
 
 /**
- * Mosaico responsive de tarjetas de producto con ajuste rápido de precio.
+ * Mosaico responsive de tarjetas de producto con estado y acción de agregado.
  */
 export function ProductCardGrid({
   products,
-  onPriceChange,
+  loading = false,
+  onAdd,
   onSelect,
 }: ProductCardGridProps) {
   return (
     <Box
       display="grid"
-      gap={1}
+      gap={2}
+      p={2}
       sx={{
         gridTemplateColumns: {
-          xs: 'repeat(2, 1fr)',
-          sm: 'repeat(3, 1fr)',
-          md: 'repeat(4, 1fr)',
-          lg: 'repeat(5, 1fr)',
-          xl: 'repeat(6, 1fr)',
+          xs: '1fr',
+          sm: 'repeat(auto-fill, minmax(220px, 1fr))',
         },
       }}
     >
-      {products.map((p) => {
-        const badge = BADGE_MAP[p.status ?? 'available'];
+      {(loading ? Array.from({ length: 6 }) : products).map((p, idx) => {
+        const product = loading ? undefined : (p as ProductCard);
+        const badge = BADGE_MAP[product?.status ?? 'default'];
+        if (loading) {
+          return (
+            <Box key={idx} borderRadius={1} sx={{ p: 2, bgcolor: '#FFF8EE' }}>
+              <Skeleton variant="rectangular" width={56} height={56} />
+              <Skeleton width="60%" sx={{ mt: 1 }} />
+              <Skeleton width="40%" sx={{ mt: 0.5 }} />
+            </Box>
+          );
+        }
+
+        const formattedPrice = new Intl.NumberFormat('es-AR', {
+          style: 'currency',
+          currency: product?.currency ?? 'ARS',
+        }).format(product!.price);
+        const isOut = product?.status === 'out_of_stock';
+
         return (
           <Box
-            key={p.id}
-            component="button"
-            type="button"
-            onClick={() => onSelect?.(p.id)}
+            key={product!.id}
+            component="div"
+            role="button"
+            tabIndex={0}
+            position="relative"
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 1,
+              bgcolor: '#FFF8EE',
+              borderRadius: 1,
+              cursor: 'pointer',
+              '&:hover': { boxShadow: 1 },
+              '&:focus-visible': {
+                outline: '2px solid',
+                outlineColor: 'primary.main',
+              },
+              opacity: isOut ? 0.4 : 1,
+            }}
+            onClick={() => onSelect?.(product!.id)}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 e.preventDefault();
-                onSelect?.(p.id);
+                onSelect?.(product!.id);
               }
             }}
-            tabIndex={0}
-            position="relative"
-            textAlign="left"
-            sx={{
-              cursor: 'pointer',
-              p: 1,
-              borderRadius: 1,
-              bgcolor:
-                p.status === 'out_of_stock'
-                  ? 'action.disabledBackground'
-                  : 'background.paper',
-              '&:hover': { bgcolor: 'action.hover' },
-            }}
           >
-            <Box position="absolute" top={4} right={4}>
-              <StatusBadgeDisplay
-                label={badge.label}
-                status={badge.status}
-                size="small"
-              />
-            </Box>
-            <ProductListItem
-              name={p.name}
-              price={p.price}
-              status={p.status}
-              currency={p.currency}
-              src={p.src}
+            <Avatar
+              variant="square"
+              alt={product!.name}
+              src={product!.src}
+              sx={{ width: { xs: 56, sm: 40 }, height: { xs: 56, sm: 40 } }}
             />
-            <Box position="absolute" bottom={4} left={4}>
-              <PriceStepper
-                value={p.price}
-                onChange={(val) => onPriceChange?.(p.id, val)}
+            <Box display="flex" flexDirection="column" gap={1}>
+              <Box display="flex" alignItems="center" gap={1}>
+                <Badge
+                  variant="dot"
+                  content={0}
+                  color={badge.color}
+                  showZero
+                  slotProps={{ badge: { sx: { height: 8, minWidth: 8 } } }}
+                >
+                  <Box sx={{ width: 0, height: 0 }} />
+                </Badge>
+                <Typography variant="body1" noWrap>
+                  {product!.name}
+                </Typography>
+              </Box>
+              <Box display="flex" alignItems="center" gap={1}>
+                <Typography variant="body2" sx={{ color: '#2F2F2F' }}>
+                  {formattedPrice}
+                </Typography>
+                <IconButton
+                  size="small"
+                  aria-label={`Agregar ${product!.name} al carrito`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onAdd?.(product!.id);
+                  }}
+                  disabled={isOut}
+                >
+                  <AddIcon fontSize="small" />
+                </IconButton>
+              </Box>
+            </Box>
+            <Box position="absolute" top={12} right={12}>
+              <Chip
+                label={badge.label}
+                color={badge.color}
                 size="small"
+                role="status"
+                aria-live="polite"
               />
             </Box>
           </Box>
