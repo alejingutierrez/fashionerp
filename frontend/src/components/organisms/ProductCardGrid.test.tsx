@@ -27,16 +27,19 @@ describe('ProductCardGrid', () => {
     const handle = jest.fn();
     renderWithTheme(<ProductCardGrid products={[product]} onSelect={handle} />);
     const card = screen.getAllByRole('button')[0];
+    card.focus();
     await user.keyboard('{Enter}');
     expect(handle).toHaveBeenCalledWith('1');
   });
 
-  it('calls onPriceChange from stepper', async () => {
+  it('calls onAdd when clicking plus button', async () => {
     const user = userEvent.setup();
     const handle = jest.fn();
-    renderWithTheme(<ProductCardGrid products={[product]} onPriceChange={handle} />);
-    const inc = screen.getByRole('button', { name: /incrementar/i });
-    await user.click(inc);
-    expect(handle).toHaveBeenCalledWith('1', 10.01);
+    renderWithTheme(<ProductCardGrid products={[product]} onAdd={handle} />);
+    const add = screen.getByRole('button', {
+      name: /Agregar Producto al carrito/i,
+    });
+    await user.click(add);
+    expect(handle).toHaveBeenCalledWith('1');
   });
 });
