@@ -38,3 +38,4 @@ export { FilterChip } from './FilterChip';
 export { TableRowItem } from './TableRowItem';
 export { StockLevelSlider } from './StockLevelSlider';
 export { DiscountCheckboxGroup } from './DiscountCheckboxGroup';
+export { ImageUpload } from './ImageUpload';
