@@ -17,6 +17,7 @@ export function LabeledCurrencyField({
   value,
   onChange,
   currency = 'USD',
+  locale = 'en-US',
   min,
   max,
   error = false,
@@ -62,6 +63,7 @@ export function LabeledCurrencyField({
         value={value}
         onChange={onChange}
         currency={currency}
+        locale={locale}
         min={min}
         max={max}
         error={error || outOfRange}
