@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Box, Typography, Skeleton } from '@mui/material';
-import { Avatar, Chip } from '../atoms';
+import ImageIcon from '@mui/icons-material/Image';
+import { keyframes } from '@emotion/react';
+import { Chip } from '../atoms';
 import { NumberStepper } from '../molecules';
 
 export interface ProductCard {
@@ -30,6 +32,11 @@ const BADGE_MAP = {
   default: { label: undefined, color: 'default' },
 } as const;
 
+const pulse = keyframes`
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.9; }
+`;
+
 /**
  * Mosaico responsive de tarjetas de producto con estado y acción de agregado.
  */
@@ -53,7 +60,8 @@ export function ProductCardGrid({
         columnGap: 2,
         gridTemplateColumns: {
           xs: '1fr',
-          sm: 'repeat(auto-fill, minmax(240px, 1fr))',
+          sm: 'repeat(auto-fill, minmax(280px, 1fr))',
+          md: 'repeat(auto-fill, minmax(220px, 1fr))',
         },
       }}
       p={2}
@@ -95,18 +103,21 @@ export function ProductCardGrid({
             position="relative"
             sx={{
               display: 'flex',
-              flexDirection: 'column',
-              gap: 1,
+              flexDirection: { xs: 'column', sm: 'row' },
               bgcolor: '#FFFAF0',
               borderRadius: 1,
-              p: 2,
-              minHeight: 140,
+              overflow: 'hidden',
               cursor: 'pointer',
+              boxShadow: 1,
               transition: 'box-shadow .15s',
-              '&:hover': { boxShadow: '0 2px 8px rgba(0,0,0,.12)' },
-              '&:focus-visible': { boxShadow: '0 2px 8px rgba(0,0,0,.12)' },
-              opacity: isOut ? 0.45 : 1,
-              pointerEvents: isOut ? 'none' : 'auto',
+              '&:hover': {
+                boxShadow: '0 4px 12px rgba(0,0,0,.15)',
+              },
+              '&:hover .product-img': {
+                transform: 'scale(1.02)',
+              },
+              '&:focus-visible': { boxShadow: '0 4px 12px rgba(0,0,0,.15)' },
+              opacity: isOut ? 0.7 : 1,
             }}
             onClick={() => onSelect?.(product!.id)}
             onKeyDown={(e) => {
@@ -116,44 +127,116 @@ export function ProductCardGrid({
               }
             }}
           >
-            <Avatar
-              variant="square"
-              alt={product!.name}
-              src={product!.src}
-              sx={{ width: { xs: 56, sm: 40 }, height: { xs: 56, sm: 40 } }}
-            />
-            <Box display="flex" flexDirection="column" gap={1}>
-              <Typography
-                variant="body1"
-                fontWeight={500}
-                sx={{ color: '#2E2E2E' }}
-                noWrap
-              >
-                {product!.name}
-              </Typography>
-              <Box display="flex" alignItems="center" gap={1}>
-                <Typography variant="body2" sx={{ color: '#2E2E2E' }}>
-                  {formattedPrice}
-                </Typography>
-                <NumberStepper
-                  value={qtyMap[product!.id] ?? 0}
-                  onChange={(val) => {
-                    setQtyMap((m) => ({ ...m, [product!.id]: val }));
-                    onChange?.(product!.id, val);
+            <Box
+              sx={{
+                flexBasis: { sm: '60%' },
+                position: 'relative',
+                width: { xs: '100%', sm: undefined },
+                aspectRatio: '9 / 16',
+                overflow: 'hidden',
+              }}
+            >
+              {product!.src ? (
+                <Box
+                  component="img"
+                  src={product!.src}
+                  alt={product!.name}
+                  className="product-img"
+                  sx={{
+                    position: { xs: 'absolute', sm: 'relative' },
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    transition: 'transform 120ms ease-out',
+                    filter: isOut ? 'grayscale(50%)' : undefined,
                   }}
-                  min={0}
+                />
+              ) : (
+                <Box
+                  position="absolute"
+                  top={0}
+                  left={0}
+                  width="100%"
+                  height="100%"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  sx={{ bgcolor: '#eee' }}
+                >
+                  <ImageIcon sx={{ fontSize: 40, color: '#aaa' }} />
+                </Box>
+              )}
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  bottom: 0,
+                  width: 24,
+                  background: 'linear-gradient(to right, rgba(255,255,255,0), #FFFAF0)',
+                }}
+              />
+            </Box>
+            <Box
+              sx={{
+                flexBasis: { sm: '40%' },
+                p: 2,
+                position: 'relative',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                gap: 1,
+              }}
+            >
+              <Box position="absolute" top={8} right={8}>
+                <Chip
+                  label={badge.label}
+                  color={badge.color}
                   size="small"
-                  disabled={isOut}
+                  sx={{
+                    fontWeight: 700,
+                    fontSize: 12,
+                    animation:
+                      product!.status === 'promotion'
+                        ? `${pulse} 4s infinite`
+                        : undefined,
+                  }}
+                  role="status"
+                  aria-live="polite"
                 />
               </Box>
-            </Box>
-            <Box position="absolute" top={8} right={12}>
-              <Chip
-                label={badge.label}
-                color={badge.color}
+              <Typography
+                variant="body1"
+                fontWeight={600}
+                sx={{ color: '#333', mt: 0.5, overflow: 'hidden' }}
+                component="div"
+              >
+                <Box
+                  component="span"
+                  sx={{
+                    display: '-webkit-box',
+                    WebkitBoxOrient: 'vertical',
+                    WebkitLineClamp: 2,
+                    overflow: 'hidden',
+                  }}
+                >
+                  {product!.name}
+                </Box>
+              </Typography>
+              <Typography variant="h6" sx={{ color: '#333', fontWeight: 700, mb: 1 }}>
+                {formattedPrice}
+              </Typography>
+              <NumberStepper
+                value={qtyMap[product!.id] ?? 0}
+                onChange={(val) => {
+                  setQtyMap((m) => ({ ...m, [product!.id]: val }));
+                  onChange?.(product!.id, val);
+                }}
+                min={0}
                 size="small"
-                role="status"
-                aria-live="polite"
+                disabled={isOut}
               />
             </Box>
           </Box>
