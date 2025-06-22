@@ -1,6 +1,7 @@
-import AddIcon from '@mui/icons-material/Add';
+import { useEffect, useState } from 'react';
 import { Box, Typography, Skeleton } from '@mui/material';
-import { Avatar, IconButton, Chip, Badge } from '../atoms';
+import { Avatar, Chip } from '../atoms';
+import { NumberStepper } from '../molecules';
 
 export interface ProductCard {
   id: string;
@@ -16,8 +17,8 @@ export interface ProductCardGridProps {
   products: ProductCard[];
   /** Indica si se debe mostrar el estado de carga */
   loading?: boolean;
-  /** Callback al agregar al carrito */
-  onAdd?: (id: string) => void;
+  /** Callback al cambiar la cantidad */
+  onChange?: (id: string, qty: number) => void;
   /** Callback al seleccionar un producto */
   onSelect?: (id: string) => void;
 }
@@ -35,28 +36,44 @@ const BADGE_MAP = {
 export function ProductCardGrid({
   products,
   loading = false,
-  onAdd,
+  onChange,
   onSelect,
 }: ProductCardGridProps) {
+  const [qtyMap, setQtyMap] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    setQtyMap(Object.fromEntries(products.map((p) => [p.id, 0])));
+  }, [products]);
+
   return (
     <Box
       display="grid"
-      gap={2}
-      p={2}
       sx={{
+        rowGap: 3,
+        columnGap: 2,
         gridTemplateColumns: {
           xs: '1fr',
-          sm: 'repeat(auto-fill, minmax(220px, 1fr))',
+          sm: 'repeat(auto-fill, minmax(240px, 1fr))',
         },
       }}
+      p={2}
     >
       {(loading ? Array.from({ length: 6 }) : products).map((p, idx) => {
         const product = loading ? undefined : (p as ProductCard);
         const badge = BADGE_MAP[product?.status ?? 'default'];
         if (loading) {
           return (
-            <Box key={idx} borderRadius={1} sx={{ p: 2, bgcolor: '#FFF8EE' }}>
-              <Skeleton variant="rectangular" width={56} height={56} />
+            <Box
+              key={idx}
+              borderRadius={1}
+              sx={{ p: 2, bgcolor: '#FFFAF0', minHeight: 140, width: '100%' }}
+            >
+              <Skeleton
+                variant="rectangular"
+                width="100%"
+                height={96}
+                animation="wave"
+              />
               <Skeleton width="60%" sx={{ mt: 1 }} />
               <Skeleton width="40%" sx={{ mt: 0.5 }} />
             </Box>
@@ -80,15 +97,16 @@ export function ProductCardGrid({
               display: 'flex',
               flexDirection: 'column',
               gap: 1,
-              bgcolor: '#FFF8EE',
+              bgcolor: '#FFFAF0',
               borderRadius: 1,
+              p: 2,
+              minHeight: 140,
               cursor: 'pointer',
-              '&:hover': { boxShadow: 1 },
-              '&:focus-visible': {
-                outline: '2px solid',
-                outlineColor: 'primary.main',
-              },
-              opacity: isOut ? 0.4 : 1,
+              transition: 'box-shadow .15s',
+              '&:hover': { boxShadow: '0 2px 8px rgba(0,0,0,.12)' },
+              '&:focus-visible': { boxShadow: '0 2px 8px rgba(0,0,0,.12)' },
+              opacity: isOut ? 0.45 : 1,
+              pointerEvents: isOut ? 'none' : 'auto',
             }}
             onClick={() => onSelect?.(product!.id)}
             onKeyDown={(e) => {
@@ -105,38 +123,31 @@ export function ProductCardGrid({
               sx={{ width: { xs: 56, sm: 40 }, height: { xs: 56, sm: 40 } }}
             />
             <Box display="flex" flexDirection="column" gap={1}>
+              <Typography
+                variant="body1"
+                fontWeight={500}
+                sx={{ color: '#2E2E2E' }}
+                noWrap
+              >
+                {product!.name}
+              </Typography>
               <Box display="flex" alignItems="center" gap={1}>
-                <Badge
-                  variant="dot"
-                  content={0}
-                  color={badge.color}
-                  showZero
-                  slotProps={{ badge: { sx: { height: 8, minWidth: 8 } } }}
-                >
-                  <Box sx={{ width: 0, height: 0 }} />
-                </Badge>
-                <Typography variant="body1" noWrap>
-                  {product!.name}
-                </Typography>
-              </Box>
-              <Box display="flex" alignItems="center" gap={1}>
-                <Typography variant="body2" sx={{ color: '#2F2F2F' }}>
+                <Typography variant="body2" sx={{ color: '#2E2E2E' }}>
                   {formattedPrice}
                 </Typography>
-                <IconButton
-                  size="small"
-                  aria-label={`Agregar ${product!.name} al carrito`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onAdd?.(product!.id);
+                <NumberStepper
+                  value={qtyMap[product!.id] ?? 0}
+                  onChange={(val) => {
+                    setQtyMap((m) => ({ ...m, [product!.id]: val }));
+                    onChange?.(product!.id, val);
                   }}
+                  min={0}
+                  size="small"
                   disabled={isOut}
-                >
-                  <AddIcon fontSize="small" />
-                </IconButton>
+                />
               </Box>
             </Box>
-            <Box position="absolute" top={12} right={12}>
+            <Box position="absolute" top={8} right={12}>
               <Chip
                 label={badge.label}
                 color={badge.color}
