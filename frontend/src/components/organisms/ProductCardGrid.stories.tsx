@@ -16,7 +16,7 @@ const meta: Meta<typeof ProductCardGrid> = {
     products: sampleProducts,
   },
   argTypes: {
-    onAdd: { action: 'added' },
+    onChange: { action: 'changed' },
     onSelect: { action: 'selected' },
   },
 };

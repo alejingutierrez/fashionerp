@@ -32,14 +32,12 @@ describe('ProductCardGrid', () => {
     expect(handle).toHaveBeenCalledWith('1');
   });
 
-  it('calls onAdd when clicking plus button', async () => {
+  it('calls onChange when incrementing quantity', async () => {
     const user = userEvent.setup();
     const handle = jest.fn();
-    renderWithTheme(<ProductCardGrid products={[product]} onAdd={handle} />);
-    const add = screen.getByRole('button', {
-      name: /Agregar Producto al carrito/i,
-    });
-    await user.click(add);
-    expect(handle).toHaveBeenCalledWith('1');
+    renderWithTheme(<ProductCardGrid products={[product]} onChange={handle} />);
+    const inc = screen.getByRole('button', { name: /increment/i });
+    await user.click(inc);
+    expect(handle).toHaveBeenCalledWith('1', 1);
   });
 });
