@@ -56,15 +56,12 @@ export function ProductCardGrid({
     <Box
       display="grid"
       sx={{
-        rowGap: 3,
-        columnGap: 2,
-        gridTemplateColumns: {
-          xs: '1fr',
-          sm: 'repeat(auto-fill, minmax(280px, 1fr))',
-          md: 'repeat(auto-fill, minmax(220px, 1fr))',
-        },
+        gap: { xs: 2, sm: 2.5, md: 3 },
+        gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+        maxWidth: { lg: 1280 },
+        mx: 'auto',
       }}
-      p={2}
+      p={{ xs: 2, sm: 2.5 }}
     >
       {(loading ? Array.from({ length: 6 }) : products).map((p, idx) => {
         const product = loading ? undefined : (p as ProductCard);
@@ -174,8 +171,13 @@ export function ProductCardGrid({
                   top: 0,
                   right: 0,
                   bottom: 0,
-                  width: 24,
-                  background: 'linear-gradient(to right, rgba(255,255,255,0), #FFFAF0)',
+                  width: '10%',
+                  bgcolor: '#FFFAF0',
+                  maskImage:
+                    'linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,.8) 100%)',
+                  WebkitMaskImage:
+                    'linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,.8) 100%)',
+                  pointerEvents: 'none',
                 }}
               />
             </Box>
