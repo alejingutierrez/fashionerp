@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { ProductDetailHeader } from './ProductDetailHeader';
 
 const meta: Meta<typeof ProductDetailHeader> = {
@@ -8,7 +8,7 @@ const meta: Meta<typeof ProductDetailHeader> = {
   parameters: {
     msw: {
       handlers: [
-        rest.patch('/api/v1/products/1', (_req, res, ctx) => res(ctx.status(200))),
+        http.patch('/api/v1/products/1', () => HttpResponse.json({}, { status: 200 })),
       ],
     },
   },
@@ -39,7 +39,7 @@ export const ErrorGuardando: Story = {
   parameters: {
     msw: {
       handlers: [
-        rest.patch('/api/v1/products/1', (_req, res, ctx) => res(ctx.status(500))),
+        http.patch('/api/v1/products/1', () => HttpResponse.json({}, { status: 500 })),
       ],
     },
   },
