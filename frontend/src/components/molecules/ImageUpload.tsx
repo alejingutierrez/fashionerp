@@ -14,6 +14,12 @@ export interface ImageUploadProps {
   mimeTypes?: string[];
   /** Callback cuando la carga finaliza exitosamente */
   onChange?: (url: string) => void;
+  /** Variante de visualización */
+  variant?: 'dropzone' | 'icon';
+  /** Dimensión del contenedor */
+  size?: number;
+  /** Muestra vista previa cuando existe una imagen */
+  showPreview?: boolean;
 }
 
 type Status = 'idle' | 'dragging' | 'uploading' | 'success' | 'error';
@@ -24,10 +30,15 @@ export function ImageUpload({
   maxSize = 5 * 1024 * 1024,
   mimeTypes = ['image/jpeg', 'image/png'],
   onChange,
+  variant = 'dropzone',
+  size = 128,
+  showPreview = true,
 }: ImageUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState<Status>('idle');
-  const [preview, setPreview] = useState<string | undefined>(value);
+  const [preview, setPreview] = useState<string | undefined>(
+    showPreview ? value : undefined,
+  );
   const [snackbar, setSnackbar] = useState<{ open: boolean; message: string }>({
     open: false,
     message: '',
@@ -69,6 +80,7 @@ export function ImageUpload({
     handleFiles(e.target.files);
   };
 
+  const dimension = size;
   const borderColor =
     status === 'dragging'
       ? 'info.main'
@@ -77,81 +89,100 @@ export function ImageUpload({
         : 'grey.400';
 
   return (
-    <Box position="relative" width={128} height={128}>
-      <Box
-        component="div"
-        onClick={openFile}
-        onDragOver={(e) => {
-          e.preventDefault();
-          setStatus('dragging');
-        }}
-        onDragLeave={resetDrag}
-        onDrop={onDrop}
-        sx={{
-          width: 128,
-          height: 128,
-          border: '2px dashed',
-          borderColor,
-          borderRadius: 1,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          overflow: 'hidden',
-          position: 'relative',
-          cursor: 'pointer',
-          bgcolor: 'grey.100',
-        }}
-        data-testid="dropzone"
-        data-error={status === 'error'}
-      >
-        {preview ? (
-          <Avatar src={preview} variant="rounded" sx={{ width: 128, height: 128 }} />
-        ) : (
-          <Avatar sx={{ width: 128, height: 128, bgcolor: 'grey.300' }}>
-            <CloudUploadIcon fontSize="large" />
-          </Avatar>
-        )}
-        {status === 'uploading' && (
-          <Box
-            position="absolute"
-            top={0}
-            left={0}
-            width="100%"
-            height="100%"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            bgcolor="rgba(255,255,255,0.7)"
-          >
-            <ProgressSpinner />
-          </Box>
-        )}
-        {status === 'dragging' && (
-          <Box
-            position="absolute"
-            top={0}
-            left={0}
-            width="100%"
-            height="100%"
-            bgcolor="rgba(255,255,255,0.7)"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Typography>Haz clic o arrastra</Typography>
-          </Box>
-        )}
-        {status === 'error' && (
-          <Badge
-            content=""
-            color="error"
-            variant="dot"
-            sx={{ position: 'absolute', top: 4, right: 4 }}
-          >
-            <span />
-          </Badge>
-        )}
-      </Box>
+    <Box position="relative" width={dimension} height={dimension}>
+      {variant === 'dropzone' ? (
+        <Box
+          component="div"
+          onClick={openFile}
+          onDragOver={(e) => {
+            e.preventDefault();
+            setStatus('dragging');
+          }}
+          onDragLeave={resetDrag}
+          onDrop={onDrop}
+          sx={{
+            width: dimension,
+            height: dimension,
+            border: '2px dashed',
+            borderColor,
+            borderRadius: 1,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflow: 'hidden',
+            position: 'relative',
+            cursor: 'pointer',
+            bgcolor: 'grey.100',
+          }}
+          data-testid="dropzone"
+          data-error={status === 'error'}
+        >
+          {showPreview && preview ? (
+            <Avatar src={preview} variant="rounded" sx={{ width: dimension, height: dimension }} />
+          ) : (
+            <Avatar sx={{ width: dimension, height: dimension, bgcolor: 'grey.300' }}>
+              <CloudUploadIcon fontSize="large" />
+            </Avatar>
+          )}
+          {status === 'uploading' && (
+            <Box
+              position="absolute"
+              top={0}
+              left={0}
+              width="100%"
+              height="100%"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              bgcolor="rgba(255,255,255,0.7)"
+            >
+              <ProgressSpinner />
+            </Box>
+          )}
+          {status === 'dragging' && (
+            <Box
+              position="absolute"
+              top={0}
+              left={0}
+              width="100%"
+              height="100%"
+              bgcolor="rgba(255,255,255,0.7)"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Typography>Haz clic o arrastra</Typography>
+            </Box>
+          )}
+          {status === 'error' && (
+            <Badge
+              content=""
+              color="error"
+              variant="dot"
+              sx={{ position: 'absolute', top: 4, right: 4 }}
+            >
+              <span />
+            </Badge>
+          )}
+        </Box>
+      ) : (
+        <Box
+          onClick={openFile}
+          sx={{
+            width: dimension,
+            height: dimension,
+            borderRadius: '50%',
+            bgcolor: 'grey.200',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+          }}
+          data-testid="upload-button"
+        >
+          {status === 'uploading' ? <ProgressSpinner size={20} /> : <CloudUploadIcon />}
+        </Box>
+      )}
       <input
         type="file"
         hidden

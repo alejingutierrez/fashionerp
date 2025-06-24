@@ -37,3 +37,10 @@ export const FormatoInválido: Story = {
     uploadFn: () => Promise.reject(new Error('Formato inválido')),
   },
 };
+
+export const Boton: Story = {
+  args: {
+    variant: 'icon',
+    size: 40,
+  },
+};

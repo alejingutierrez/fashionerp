@@ -37,4 +37,13 @@ describe('ImageUpload', () => {
     await userEvent.upload(input, file);
     expect(mockUpload).not.toHaveBeenCalled();
   });
+
+  it('permite subir usando la variante icono', async () => {
+    const mockUpload = jest.fn(async () => 'https://cdn.test/img.png');
+    renderWithTheme(<ImageUpload variant="icon" uploadFn={mockUpload} />);
+    const file = new File(['foto'], 'foto.png', { type: 'image/png' });
+    const input = screen.getByTestId('file-input') as HTMLInputElement;
+    await userEvent.upload(input, file);
+    await waitFor(() => expect(mockUpload).toHaveBeenCalled());
+  });
 });
