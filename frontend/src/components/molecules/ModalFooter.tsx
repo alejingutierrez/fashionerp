@@ -17,6 +17,8 @@ export interface ModalFooterProps {
   loading?: boolean;
   /** Alineación de los botones */
   align?: 'right' | 'center';
+  /** Tipo de boton primario */
+  primaryType?: 'button' | 'submit';
 }
 
 /**
@@ -30,6 +32,7 @@ export function ModalFooter({
   primaryDisabled = false,
   loading = false,
   align = 'right',
+  primaryType = 'button',
 }: ModalFooterProps) {
   const justifyContent = align === 'center' ? 'center' : 'flex-end';
 
@@ -38,7 +41,12 @@ export function ModalFooter({
       {secondaryText && onSecondary && (
         <SecondaryButton onClick={onSecondary}>{secondaryText}</SecondaryButton>
       )}
-      <PrimaryButton onClick={onPrimary} disabled={primaryDisabled} loading={loading}>
+      <PrimaryButton
+        type={primaryType}
+        onClick={onPrimary}
+        disabled={primaryDisabled}
+        loading={loading}
+      >
         {primaryText}
       </PrimaryButton>
     </Box>

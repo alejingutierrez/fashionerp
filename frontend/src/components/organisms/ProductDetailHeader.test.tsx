@@ -22,7 +22,16 @@ describe('ProductDetailHeader', () => {
     const handle = jest.fn().mockRejectedValue(new Error('fail'));
     renderWithTheme(<ProductDetailHeader name="Prod" onStatusChange={handle} />);
     await user.click(screen.getByRole('button', { name: /activo/i }));
-    expect(await screen.findByText('Error al guardar')).toBeInTheDocument();
+    expect((await screen.findAllByText('Error al guardar')).length).toBeGreaterThan(0);
+  });
+
+  it('focusable avatar opens dialog with enter', async () => {
+    const user = userEvent.setup();
+    renderWithTheme(<ProductDetailHeader name="Prod" />);
+    const box = screen.getAllByRole('button')[0];
+    box.focus();
+    await user.keyboard('[Enter]');
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
   });
 
   it('opens modal to edit name', async () => {
@@ -31,7 +40,7 @@ describe('ProductDetailHeader', () => {
     renderWithTheme(<ProductDetailHeader name="Prod" onNameSave={handle} />);
     await user.click(screen.getByRole('button', { name: /editar nombre/i }));
     await user.type(screen.getByRole('textbox'), 'X');
-    await user.click(screen.getByRole('button', { name: /guardar/i }));
+    await user.keyboard('[Enter]');
     await waitFor(() => expect(handle).toHaveBeenCalledWith('ProdX'));
   });
 });
