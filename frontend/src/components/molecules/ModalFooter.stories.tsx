@@ -14,6 +14,7 @@ const meta: Meta<typeof ModalFooter> = {
     primaryDisabled: { control: 'boolean' },
     loading: { control: 'boolean' },
     align: { control: 'radio', options: ['right', 'center'] },
+    primaryType: { control: 'radio', options: ['button', 'submit'] },
     onPrimary: { action: 'primary' },
     onSecondary: { action: 'secondary' },
   },

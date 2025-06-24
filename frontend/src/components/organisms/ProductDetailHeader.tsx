@@ -1,12 +1,17 @@
 import { useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
-import { Box, Dialog, DialogContent, TextField, Typography } from '@mui/material';
+import { Box, Dialog, DialogContent, Typography, Skeleton } from '@mui/material';
 import {
   AvatarName,
   IconLabelButton,
   ModalFooter,
   ModalHeader,
   StatusToggleChip,
+  SnackbarAlert,
+  BreadcrumbItem,
+  type BreadcrumbItemProps,
+  LabeledTextField,
+  ImageUpload,
 } from '../molecules';
 
 export interface ProductDetailHeaderProps {
@@ -14,12 +19,22 @@ export interface ProductDetailHeaderProps {
   name: string;
   /** Imagen del producto */
   src?: string;
+  /** Código SKU a copiar */
+  sku?: string;
   /** Estado inicial */
   defaultActive?: boolean;
   /** Callback al guardar un nuevo nombre */
   onNameSave?: (name: string) => Promise<void> | void;
   /** Callback al cambiar de estado */
   onStatusChange?: (active: boolean) => Promise<void> | void;
+  /** Permiso para cambiar estado */
+  canEditStatus?: boolean;
+  /** Indica si se muestran esqueletos */
+  loading?: boolean;
+  /** Rutas de navegación */
+  breadcrumbs?: BreadcrumbItemProps[];
+  /** Maneja cambio de imagen */
+  onImageChange?: (url: string) => void;
 }
 
 /**
@@ -28,9 +43,14 @@ export interface ProductDetailHeaderProps {
 export function ProductDetailHeader({
   name: initialName,
   src,
+  sku,
   defaultActive = true,
   onNameSave,
   onStatusChange,
+  canEditStatus = true,
+  loading = false,
+  breadcrumbs,
+  onImageChange,
 }: ProductDetailHeaderProps) {
   const [name, setName] = useState(initialName);
   const [editOpen, setEditOpen] = useState(false);
@@ -39,7 +59,11 @@ export function ProductDetailHeader({
   const [active, setActive] = useState(defaultActive);
   const [statusLoading, setStatusLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [announce, setAnnounce] = useState('');
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: 'success' | 'error';
+  }>({ open: false, message: '', severity: 'success' });
 
   const handleStatusToggle = async (next: boolean) => {
     setStatusLoading(true);
@@ -47,9 +71,10 @@ export function ProductDetailHeader({
     try {
       await onStatusChange?.(next);
       setActive(next);
-      setAnnounce('Guardado con éxito');
+      setSnackbar({ open: true, message: 'Guardado con éxito', severity: 'success' });
     } catch (e) {
       setError('Error al guardar');
+      setSnackbar({ open: true, message: 'Error al guardar', severity: 'error' });
     } finally {
       setStatusLoading(false);
     }
@@ -61,10 +86,11 @@ export function ProductDetailHeader({
     try {
       await onNameSave?.(input);
       setName(input);
-      setAnnounce('Guardado con éxito');
+      setSnackbar({ open: true, message: 'Guardado con éxito', severity: 'success' });
       setEditOpen(false);
     } catch (e) {
       setError('Error al guardar');
+      setSnackbar({ open: true, message: 'Error al guardar', severity: 'error' });
     } finally {
       setSaving(false);
     }
@@ -73,37 +99,82 @@ export function ProductDetailHeader({
   return (
     <Box display="flex" alignItems="center" gap={2}>
       <Box
+        role="button"
+        tabIndex={0}
+        onClick={() => {
+          setInput(name);
+          setEditOpen(true);
+        }}
         onKeyDown={(e) => {
-          if (e.key === 'Enter') {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setInput(name);
             setEditOpen(true);
           }
         }}
       >
-        <AvatarName
-          name={name}
-          src={src}
-          orientation="vertical"
-          sx={{
-            width: 200,
-            height: 200,
-            '& .MuiAvatar-root': { width: 200, height: 200 },
-          }}
-        />
+        {loading ? (
+          <Skeleton
+            variant="circular"
+            width={{ xs: 120, md: 200 }}
+            height={{ xs: 120, md: 200 }}
+          />
+        ) : (
+          <AvatarName
+            name={name}
+            src={src}
+            orientation="vertical"
+            sx={{
+              width: { xs: 120, md: 200 },
+              height: { xs: 120, md: 200 },
+              '& .MuiAvatar-root': {
+                width: { xs: 120, md: 200 },
+                height: { xs: 120, md: 200 },
+              },
+            }}
+          />
+        )}
+        {onImageChange && !loading && (
+          <Box mt={1}>
+            <ImageUpload value={src} onChange={onImageChange} />
+          </Box>
+        )}
       </Box>
       <Box display="flex" flexDirection="column" gap={1} alignItems="flex-start">
-        <StatusToggleChip
-          defaultActive={active}
-          loading={statusLoading}
-          onToggle={handleStatusToggle}
-        />
-        <IconLabelButton
-          icon={<EditIcon />}
-          label="Editar nombre"
-          onClick={() => setEditOpen(true)}
-        />
-        <Box role="status" aria-live="polite" sx={{ fontSize: 0 }}>
-          {announce}
-        </Box>
+        {breadcrumbs && (
+          <Box>
+            {breadcrumbs.map((b, idx) => (
+              <BreadcrumbItem key={idx} {...b} isLast={idx === breadcrumbs.length - 1} />
+            ))}
+          </Box>
+        )}
+        {loading ? (
+          <Skeleton width={100} height={32} />
+        ) : (
+          <StatusToggleChip
+            defaultActive={active}
+            loading={statusLoading}
+            onToggle={handleStatusToggle}
+            hasPermission={canEditStatus}
+          />
+        )}
+        {loading ? (
+          <Skeleton width={120} height={32} />
+        ) : (
+          <IconLabelButton
+            icon={<EditIcon />}
+            label="Editar nombre"
+            onClick={() => {
+              setInput(name);
+              setEditOpen(true);
+            }}
+          />
+        )}
+        {sku && !loading && (
+          <Typography variant="body2" color="text.secondary">
+            SKU: {sku}
+          </Typography>
+        )}
         {error && (
           <Typography color="error" variant="body2">
             {error}
@@ -112,23 +183,40 @@ export function ProductDetailHeader({
       </Box>
       <Dialog open={editOpen} onClose={() => setEditOpen(false)}>
         <ModalHeader title="Editar nombre" onClose={() => setEditOpen(false)} />
-        <DialogContent>
-          <TextField
-            fullWidth
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            autoFocus
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSave();
+          }}
+        >
+          <DialogContent>
+            <LabeledTextField
+              label="Nombre"
+              fullWidth
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              error={!!error}
+              helperText={error ?? ''}
+              autoFocus
+            />
+          </DialogContent>
+          <ModalFooter
+            primaryText="Guardar"
+            primaryType="submit"
+            onPrimary={handleSave}
+            primaryDisabled={saving || input.trim() === ''}
+            secondaryText="Cancelar"
+            onSecondary={() => setEditOpen(false)}
+            loading={saving}
           />
-        </DialogContent>
-        <ModalFooter
-          primaryText="Guardar"
-          onPrimary={handleSave}
-          primaryDisabled={saving || input.trim() === ''}
-          secondaryText="Cancelar"
-          onSecondary={() => setEditOpen(false)}
-          loading={saving}
-        />
+        </form>
       </Dialog>
+      <SnackbarAlert
+        open={snackbar.open}
+        message={snackbar.message}
+        severity={snackbar.severity}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+      />
     </Box>
   );
 }

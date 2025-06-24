@@ -61,4 +61,12 @@ describe('ModalFooter', () => {
     btn.click();
     expect(onPrimary).not.toHaveBeenCalled();
   });
+
+  it('sets button type when primaryType provided', () => {
+    renderWithTheme(
+      <ModalFooter primaryText="Ok" onPrimary={() => {}} primaryType="submit" />,
+    );
+    const btn = screen.getByRole('button', { name: /ok/i });
+    expect(btn).toHaveAttribute('type', 'submit');
+  });
 });
