@@ -112,6 +112,7 @@ export function ProductDetailHeader({
             setEditOpen(true);
           }
         }}
+        sx={{ position: 'relative' }}
       >
         {loading ? (
           <Skeleton
@@ -135,8 +136,13 @@ export function ProductDetailHeader({
           />
         )}
         {onImageChange && !loading && (
-          <Box mt={1}>
-            <ImageUpload value={src} onChange={onImageChange} />
+          <Box position="absolute" bottom={8} right={8}>
+            <ImageUpload
+              variant="icon"
+              size={40}
+              showPreview={false}
+              onChange={onImageChange}
+            />
           </Box>
         )}
       </Box>
