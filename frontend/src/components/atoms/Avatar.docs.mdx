@@ -1,13 +1,45 @@
-import { Meta, Story, ArgsTable } from '@storybook/blocks';
+import { Meta, Story, Canvas, ArgsTable, Source } from '@storybook/blocks';
 import * as Stories from './Avatar.stories';
 import { Avatar } from './Avatar';
 
-<Meta of={Stories} />
+<Meta of={Stories} title="Atoms/Avatar" />
 
 # Avatar
 
-Muestra la imagen de perfil o iniciales de un usuario.
+El componente `Avatar` se utiliza para mostrar la imagen de perfil de un usuario, sus iniciales, o un icono genérico si ninguna de las anteriores está disponible. Ofrece varias opciones de personalización, incluyendo tamaño, forma, indicadores de estado y badges de notificación.
 
-<Story id="atoms-avatar--image" />
+El componente soporta temas claro y oscuro automáticamente a través del `AppThemeProvider` global.
 
-<ArgsTable of={Avatar} story="Image" />
+## Ejemplos Principales
+
+### Imagen, Iniciales e Icono Genérico
+<Canvas of={Stories.DefaultWithImage} />
+<Canvas of={Stories.Initials} />
+<Canvas of={Stories.GenericIcon} />
+
+### Tamaños y Variantes
+<Canvas of={Stories.Sizes} />
+<Canvas of={Stories.Variants} />
+
+### Indicadores de Estado
+Los avatares pueden mostrar un indicador de estado visual para `online`, `offline`, `away` o `busy`.
+<Canvas of={Stories.WithStatusIndicators} />
+
+### Badges de Notificación
+Se puede añadir un badge para mostrar notificaciones, ya sea como un punto o con contenido numérico/textual.
+<Canvas of={Stories.WithBadges} />
+El color y otras propiedades del badge se pueden personalizar usando la prop `BadgeProps`. Por ejemplo, para un badge de error:
+```tsx
+<Avatar badgeContent={1} BadgeProps={{ color: 'error' }}>U</Avatar>
+```
+<Canvas of={Stories.CustomizableBadge} />
+
+
+### Ejemplo Complejo (Kitchen Sink)
+Combinando varias propiedades para una visualización más rica:
+<Canvas of={Stories.KitchenSink} />
+
+
+## Props
+Todas las props del componente `Avatar` de Material UI son soportadas, además de las siguientes props personalizadas:
+<ArgsTable of={Avatar} />
