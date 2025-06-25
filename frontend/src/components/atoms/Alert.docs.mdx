@@ -31,6 +31,7 @@ El componente `Alert` muestra mensajes importantes con diferentes niveles de sev
     - Tamaño compacto (`size="small"`).
     - Cierre automático (`autoHideDuration`).
     - Acciones personalizadas (`action`).
+    - **`elevation`**: Controla el nivel de sombra (0-24) para anular el default de la variante (nueva).
 - **Estilo Dinámico:** Los colores de texto, fondo e iconos se ajustan automáticamente al modo claro/oscuro y a la severidad.
 
 ## Ejemplos Interactivos
@@ -71,6 +72,28 @@ Esta historia muestra cómo usar la prop `open` para controlar la aparición y d
 
 ### Con Acciones Personalizadas
 <Story of={Stories.WithAction} />
+
+### Control de Elevación (Sombras)
+La prop `elevation` permite personalizar la sombra de cualquier alerta.
+
+#### Filled sin Sombra (`elevation={0}`)
+<Canvas>
+  <Story of={Stories.FilledWithoutShadow} />
+</Canvas>
+<Source of={Stories.FilledWithoutShadow} />
+
+#### Standard con Elevación Alta (`elevation={8}`)
+<Canvas>
+  <Story of={Stories.StandardWithHighElevation} />
+</Canvas>
+<Source of={Stories.StandardWithHighElevation} />
+
+#### Outlined con Sombra (`elevation={1}`)
+<Canvas>
+  <Story of={Stories.OutlinedWithShadow} />
+</Canvas>
+<Source of={Stories.OutlinedWithShadow} />
+
 
 ## Propiedades
 
