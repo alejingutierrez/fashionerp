@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Alert } from './Alert';
 import { ThemeProvider } from '../../theme';
@@ -49,5 +49,31 @@ describe('Alert', () => {
     );
     expect(screen.getByText('Error:')).toBeInTheDocument();
     expect(screen.getByText('Falló')).toBeInTheDocument();
+  });
+
+  it('hides icon when hideIcon is true', () => {
+    const { container } = renderWithTheme(<Alert hideIcon>Sin icono</Alert>);
+    expect(container.querySelector('.MuiAlert-icon')).toBeNull();
+  });
+
+  it('auto hides after specified duration', () => {
+    jest.useFakeTimers();
+    const handleClose = jest.fn();
+    renderWithTheme(
+      <Alert onClose={handleClose} autoHideDuration={2000}>
+        Desaparece
+      </Alert>,
+    );
+    act(() => {
+      jest.advanceTimersByTime(2000);
+    });
+    expect(handleClose).toHaveBeenCalled();
+    jest.useRealTimers();
+  });
+
+  it('applies small size styles', () => {
+    const { container } = renderWithTheme(<Alert size="small">Pequeña</Alert>);
+    const root = container.firstChild as HTMLElement;
+    expect(root).toHaveStyle('font-size: 0.875rem');
   });
 });

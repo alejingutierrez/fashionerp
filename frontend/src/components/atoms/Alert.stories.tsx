@@ -7,6 +7,7 @@ const meta: Meta<typeof Alert> = {
   args: {
     severity: 'info',
     children: 'Información relevante para el usuario.',
+    size: 'medium',
   },
   argTypes: {
     onClose: { action: 'closed' },
@@ -18,6 +19,12 @@ const meta: Meta<typeof Alert> = {
       control: 'select',
       options: ['standard', 'outlined', 'filled'],
     },
+    size: {
+      control: 'radio',
+      options: ['small', 'medium'],
+    },
+    hideIcon: { control: 'boolean' },
+    autoHideDuration: { control: 'number' },
     title: { control: 'text' },
     children: { control: 'text' },
   },
@@ -52,4 +59,16 @@ export const WithTitle: Story = {
 };
 export const Filled: Story = {
   args: { severity: 'success', variant: 'filled', children: 'Acción completada.' },
+};
+
+export const Small: Story = {
+  args: { size: 'small', children: 'Alerta compacta' },
+};
+
+export const WithoutIcon: Story = {
+  args: { hideIcon: true, children: 'Sin icono' },
+};
+
+export const AutoHide: Story = {
+  args: { onClose: () => {}, autoHideDuration: 3000, children: 'Se cierra solo' },
 };
