@@ -1,38 +1,76 @@
-import { Meta, Story, ArgsTable } from '@storybook/blocks';
+import { Meta, Story, ArgsTable, Canvas, Source } from '@storybook/blocks';
 import * as Stories from './Alert.stories';
 import { Alert } from './Alert';
+import Button from '@mui/material/Button'; // Para ejemplos
+import Box from '@mui/material/Box'; // Para ejemplos
 
 <Meta of={Stories} />
 
-# Alert
+# Alert mejorado
 
-El componente `Alert` se utiliza para mostrar mensajes importantes al usuario, clasificados por severidad: información, éxito, advertencia o error. Ha sido mejorado visualmente para alinearse con la estética moderna y el sistema de diseño corporativo, utilizando los colores, bordes redondeados (`8px`) y sombras sutiles definidos en el tema de MUI.
+El componente `Alert` muestra mensajes importantes con diferentes niveles de severidad. Ha sido **significativamente mejorado** para ofrecer:
+
+- **Soporte completo para Modo Claro y Oscuro:** Los colores se adaptan automáticamente al tema actual, manteniendo la legibilidad y los lineamientos corporativos.
+- **Estética Moderna:**
+    - **Sombras Refinadas:** Se utiliza `theme.shadows[2]` para las variantes `filled` y `standard`, proporcionando una elevación más sutil y moderna.
+    - **Borde Distintivo:** La variante `standard` ahora incluye un `borderLeft` coloreado según la severidad, mejorando su impacto visual.
+    - **Consistencia:** Mantiene el `borderRadius` de `8px` del sistema de diseño.
+- **Animaciones Sutiles:** Incorpora animaciones de entrada (`Fade` y `Slide`) para una aparición más fluida. La visibilidad se controla con la nueva prop `open`.
 
 **Características principales:**
 
 - **Severidades:** `info`, `success`, `warning`, `error`.
-- **Variantes:** `filled` (predeterminada por el tema), `standard`, `outlined`.
+- **Variantes:**
+    - `filled`: Fondo sólido con color de severidad.
+    - `standard`: Fondo claro/oscuro sutil con `borderLeft` coloreado.
+    - `outlined`: Solo borde coloreado, fondo transparente.
 - **Personalización:**
-    - Título opcional.
-    - Ocultar el icono de severidad.
-    - Tamaño compacto (`small`).
+    - **`open`**: Controla la visibilidad para animaciones (nueva).
+    - Título opcional (`title`).
+    - Ocultar el icono de severidad (`hideIcon`).
+    - Tamaño compacto (`size="small"`).
     - Cierre automático (`autoHideDuration`).
-    - **Acciones personalizadas (`action`):** Permite añadir botones u otros elementos interactivos.
-- **Estilo:** Utiliza los colores corporativos del tema para cada severidad y presenta un `boxShadow` en variantes `filled` y `standard` para mayor profundidad.
+    - Acciones personalizadas (`action`).
+- **Estilo Dinámico:** Los colores de texto, fondo e iconos se ajustan automáticamente al modo claro/oscuro y a la severidad.
 
-## Ejemplos
+## Ejemplos Interactivos
 
-### Información (Básica)
-<Story id="atoms-alert--info" />
+### Alerta de Información (Predeterminada: `filled`)
+<Story of={Stories.Info} />
 
-### Con Título y Severidad de Error
-<Story id="atoms-alert--with-title" />
+### Alerta de Éxito
+<Story of={Stories.Success} />
 
-### Variante `filled` (Predeterminada por Tema)
-<Story id="atoms-alert--filled" />
+### Alerta de Advertencia
+<Story of={Stories.Warning} />
+
+### Alerta de Error
+<Story of={Stories.Error} />
+
+### Variante Standard Mejorada
+<Canvas>
+  <Story of={Stories.StandardVariantWithImprovements} />
+</Canvas>
+<Source of={Stories.StandardVariantWithImprovements} />
+
+### Variante Outlined
+<Canvas>
+  <Story of={Stories.OutlinedVariant} />
+</Canvas>
+<Source of={Stories.OutlinedVariant} />
+
+### Controlando la Visibilidad (Animación)
+Esta historia muestra cómo usar la prop `open` para controlar la aparición y desaparición de la alerta con animación.
+<Canvas>
+  <Story of={Stories.AnimatedAlert} />
+</Canvas>
+<Source of={Stories.AnimatedAlert} />
+
+### Alerta Cerrable con Título
+<Story of={Stories.Closable} />
 
 ### Con Acciones Personalizadas
-<Story id="atoms-alert--with-action" />
+<Story of={Stories.WithAction} />
 
 ## Propiedades
 
