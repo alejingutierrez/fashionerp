@@ -80,9 +80,13 @@ export function Avatar({
             height: statusIndicatorSize,
             borderRadius: '50%',
             backgroundColor: STATUS_COLOR_MAP[status] || 'transparent', // Color del estado
-            border: `${statusIndicatorBorderSize}px solid ${theme.palette.background.paper}`, // Borde para separarlo
+            border: `${statusIndicatorBorderSize}px solid ${theme.palette.background.paper}`, // Borde blanco/papel crucial
+            // Sutil boxShadow para dar profundidad al indicador
+            boxShadow: theme.palette.mode === 'dark'
+              ? `0 0 0 1px ${STATUS_COLOR_MAP[status]}, 0px 1px 2px 1px rgba(0,0,0,0.5)` // Sombra más oscura para resaltar en fondo oscuro
+              : `0 0 0 1px ${STATUS_COLOR_MAP[status]}, 0px 1px 2px 0px rgba(0,0,0,0.3)`, // Sombra estándar para fondo claro
             boxSizing: 'border-box',
-            zIndex: 1,
+            zIndex: 1, // Asegurar que esté sobre el avatar
           }}
           title={`Status: ${status}`}
         />
@@ -103,10 +107,18 @@ export function Avatar({
           // Ajustes para el tamaño del punto del badge si es necesario, o para el badge en general
           ...(isDot && { // Estilos específicos para el badge tipo 'dot'
             '& .MuiBadge-dot': {
-              width: statusIndicatorSize, // Usar un tamaño similar al del status indicator
+              width: statusIndicatorSize, // Mismo tamaño que el status indicator
               height: statusIndicatorSize,
               borderRadius: '50%',
               border: `${statusIndicatorBorderSize}px solid ${theme.palette.background.paper}`,
+              // Aplicar un boxShadow similar al del status dot
+              // El color del badge (backgroundColor) es manejado por MUI Badge (suele ser 'primary').
+              // El boxShadow aquí usa el color del badge (si se pudiera obtener) o un color de fallback.
+              // Por ahora, asumimos que el color del dot es 'primary' para el shadow.
+              // Si BadgeProps.color cambia el color del dot, este shadow no se adaptará.
+              boxShadow: theme.palette.mode === 'dark'
+                ? `0 0 0 1px ${(badgePropsFromProp?.color && theme.palette[badgePropsFromProp.color as keyof typeof theme.palette]?.main) || theme.palette.primary.main}, 0px 1px 2px 1px rgba(0,0,0,0.5)`
+                : `0 0 0 1px ${(badgePropsFromProp?.color && theme.palette[badgePropsFromProp.color as keyof typeof theme.palette]?.main) || theme.palette.primary.main}, 0px 1px 2px 0px rgba(0,0,0,0.3)`,
             },
           }),
           // Permitir que el color del badge se configure a través de BadgeProps o el tema

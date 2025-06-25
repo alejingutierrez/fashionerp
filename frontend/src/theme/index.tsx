@@ -33,6 +33,9 @@ const lightPalette: PaletteOptions = {
     main: '#6c757d',
     contrastText: '#ffffff',
   },
+  grey: { // Añadido para consistencia y control del color 'offline'
+    '400': '#757575', // Originalmente MUI grey[600], buen contraste en light.
+  }
 };
 
 const darkPalette: PaletteOptions = {
@@ -56,6 +59,9 @@ const darkPalette: PaletteOptions = {
     main: '#9e9e9e', // Gris medio
     contrastText: '#000000',
   },
+  grey: { // Añadido para consistencia y control del color 'offline'
+    '400': '#757575', // Mismo color que en light, buen contraste en dark paper.
+  }
 };
 
 // Opciones comunes del tema que no dependen del modo
@@ -135,9 +141,13 @@ const getComponentOverrides = (mode: 'light' | 'dark'): ThemeOptions['components
       root: { // Estilos aplicados a la raíz del componente Avatar
         border: `1px solid ${mode === 'light' ? lightPalette.divider : darkPalette.divider}`,
         // Considerar un borde más sutil o condicional si el avatar es una imagen
+        // Aplicar un boxShadow sutil para dar profundidad y modernidad
+        boxShadow: mode === 'light'
+          ? '0px 2px 4px -1px rgba(0,0,0,0.1), 0px 1px 10px 0px rgba(0,0,0,0.06)'
+          : '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 1px 10px 0px rgba(0,0,0,0.12)',
       },
       rounded: {
-        borderRadius: 8,
+        borderRadius: 8, // Ya estaba, mantener.
       },
       colorDefault: { // Para avatares con iniciales o iconos
         // Modo Claro: Usar primary.main y primary.contrastText para asegurar contraste
