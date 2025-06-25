@@ -1,37 +1,65 @@
 /**
  * Paleta corporativa con contraste mínimo 4.5:1 (WCAG AA)
  */
-import { PropsWithChildren, ReactNode } from 'react';
+import { PropsWithChildren, ReactNode, createContext, useMemo, useState, useContext } from 'react';
 import {
   createTheme,
   responsiveFontSizes,
   ThemeProvider as MuiThemeProvider,
+  PaletteOptions,
+  ThemeOptions,
 } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 
-let theme = createTheme({
-  palette: {
-    mode: 'light',
-    primary: { main: '#c1121f', contrastText: '#fdf0d5' },
-    secondary: { main: '#669bbc', contrastText: '#003049' },
-    error: { main: '#780000', contrastText: '#fdf0d5' },
-    info: { main: '#003049', contrastText: '#fdf0d5' },
-    success: { main: '#2a9d8f', contrastText: '#fdf0d5' },
-    warning: { main: '#e9c46a', contrastText: '#003049' },
-    background: {
-      default: '#fdf0d5',
-      paper: '#fdf0d5',
-    },
-    divider: '#00304933',
-    text: {
-      primary: '#003049',
-      secondary: '#667085',
-    },
-    neutral: {
-      main: '#6c757d',
-      contrastText: '#ffffff',
-    },
+// Definimos las paletas para modo claro y oscuro
+const lightPalette: PaletteOptions = {
+  mode: 'light',
+  primary: { main: '#c1121f', contrastText: '#fdf0d5' },
+  secondary: { main: '#669bbc', contrastText: '#003049' },
+  error: { main: '#780000', contrastText: '#fdf0d5' },
+  info: { main: '#003049', contrastText: '#fdf0d5' },
+  success: { main: '#2a9d8f', contrastText: '#fdf0d5' },
+  warning: { main: '#e9c46a', contrastText: '#003049' },
+  background: {
+    default: '#fdf0d5', // Beige claro
+    paper: '#ffffff', // Blanco para superficies de papel
   },
+  divider: '#00304933', // Azul oscuro con opacidad
+  text: {
+    primary: '#003049', // Azul oscuro
+    secondary: '#667085', // Gris azulado
+  },
+  neutral: {
+    main: '#6c757d',
+    contrastText: '#ffffff',
+  },
+};
+
+const darkPalette: PaletteOptions = {
+  mode: 'dark',
+  primary: { main: '#e74c3c', contrastText: '#ffffff' }, // Rojo más brillante para dark mode
+  secondary: { main: '#82a5c4', contrastText: '#001f32' }, // Azul más claro
+  error: { main: '#d32f2f', contrastText: '#ffffff' }, // Rojo error estándar
+  info: { main: '#64b5f6', contrastText: '#001f32' }, // Azul info más claro
+  success: { main: '#4caf50', contrastText: '#001f32' }, // Verde success estándar
+  warning: { main: '#ffa726', contrastText: '#001f32' }, // Naranja warning estándar
+  background: {
+    default: '#121212', // Fondo oscuro estándar de Material Design
+    paper: '#1e1e1e', // Superficies de papel un poco más claras
+  },
+  divider: '#fdf0d533', // Beige claro con opacidad
+  text: {
+    primary: '#fdf0d5', // Beige claro para texto principal
+    secondary: '#a0a0a0', // Gris claro para texto secundario
+  },
+  neutral: {
+    main: '#9e9e9e', // Gris medio
+    contrastText: '#000000',
+  },
+};
+
+// Opciones comunes del tema que no dependen del modo
+const commonThemeOptions: Omit<ThemeOptions, 'palette' | 'components'> = {
   shape: {
     borderRadius: 8,
   },
@@ -69,186 +97,238 @@ let theme = createTheme({
     appBar: 1200,
     drawer: 1100,
   },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          textTransform: 'none',
-          borderRadius: 8,
+};
+
+// Función para generar los overrides de componentes que dependen del modo
+const getComponentOverrides = (mode: 'light' | 'dark'): ThemeOptions['components'] => ({
+  MuiButton: {
+    styleOverrides: {
+      root: {
+        textTransform: 'none',
+        borderRadius: 8,
+      },
+    },
+  },
+  MuiTextField: {
+    defaultProps: {
+      margin: 'normal',
+      variant: 'outlined',
+    },
+  },
+  MuiCard: {
+    defaultProps: {
+      elevation: mode === 'light' ? 2 : 1, // Menos elevación en modo oscuro
+    },
+    styleOverrides: {
+      root: {
+        // backgroundColor: mode === 'dark' ? darkPalette.background?.paper : lightPalette.background?.paper,
+      }
+    }
+  },
+  MuiChip: {
+    defaultProps: {
+      variant: 'outlined',
+    },
+  },
+  MuiAvatar: {
+    styleOverrides: {
+      root: { // Estilos aplicados a la raíz del componente Avatar
+        border: `1px solid ${mode === 'light' ? lightPalette.divider : darkPalette.divider}`,
+        // Considerar un borde más sutil o condicional si el avatar es una imagen
+      },
+      rounded: {
+        borderRadius: 8,
+      },
+      colorDefault: { // Para avatares con iniciales o iconos
+        // Modo Claro: Usar primary.main y primary.contrastText para asegurar contraste
+        backgroundColor: mode === 'light' ? lightPalette.primary?.main : darkPalette.secondary?.main,
+        color: mode === 'light' ? lightPalette.primary?.contrastText : darkPalette.secondary?.contrastText,
+        // El borde general se maneja en `styleOverrides.root` usando el color `divider` del tema.
+      }
+    },
+  },
+  MuiTooltip: {
+    defaultProps: {
+      arrow: true,
+    },
+  },
+  MuiListItem: {
+    defaultProps: {
+      dense: true,
+    },
+  },
+  MuiTable: {
+    defaultProps: {
+      size: 'small',
+    },
+  },
+  MuiFormControl: {
+    defaultProps: {
+      margin: 'normal',
+    },
+  },
+  MuiPaper: {
+    defaultProps: {
+      elevation: mode === 'light' ? 0 : 1,
+    },
+  },
+  MuiContainer: {
+    defaultProps: {
+      maxWidth: 'xl',
+    },
+  },
+  MuiLink: {
+    styleOverrides: {
+      root: {
+        color: mode === 'light' ? lightPalette.text?.primary : darkPalette.text?.primary,
+        '&:hover': {
+          textDecorationColor: mode === 'light' ? lightPalette.text?.primary : darkPalette.text?.primary,
         },
       },
     },
-    MuiTextField: {
-      defaultProps: {
-        margin: 'normal',
-        variant: 'outlined',
+  },
+  MuiDrawer: {
+    styleOverrides: {
+      paper: {
+        backgroundColor: mode === 'light' ? lightPalette.background?.default : darkPalette.background?.paper,
       },
     },
-    MuiCard: {
-      defaultProps: {
-        elevation: 2,
+  },
+  MuiDialog: {
+    styleOverrides: {
+      paper: {
+        borderRadius: 8,
+        // backgroundColor: mode === 'dark' ? darkPalette.background?.paper : lightPalette.background?.paper,
       },
     },
-    MuiChip: {
-      defaultProps: {
-        variant: 'outlined',
+  },
+  MuiAppBar: {
+    defaultProps: {
+      color: 'inherit',
+      elevation: 0,
+    },
+    styleOverrides: {
+      root: {
+        backgroundColor: mode === 'light' ? lightPalette.background?.default : darkPalette.background?.paper,
+      }
+    }
+  },
+  MuiCssBaseline: {
+    styleOverrides: {
+      body: {
+        backgroundColor: mode === 'light' ? lightPalette.background?.default : darkPalette.background?.default,
+        color: mode === 'light' ? lightPalette.text?.primary : darkPalette.text?.primary,
+        fontFamily: `'Google Sans', sans-serif`,
+        lineHeight: 1.5,
+        WebkitFontSmoothing: 'antialiased',
+      },
+      '*': {
+        boxSizing: 'border-box',
       },
     },
-    MuiAvatar: {
-      styleOverrides: {
-        rounded: {
-          borderRadius: 8,
+  },
+  MuiTypography: {
+    defaultProps: {
+      color: 'text.primary',
+    },
+    styleOverrides: {
+      button: {
+        textTransform: 'none',
+        fontWeight: 500,
+      },
+    },
+  },
+  MuiAlert: {
+    defaultProps: {
+      variant: 'filled',
+    },
+    styleOverrides: {
+      standardWarning: {
+        '& .MuiAlert-icon': {
+          color: mode === 'light' ? '#b08000' : darkPalette.warning?.main,
+        },
+      },
+      outlinedWarning: {
+        '& .MuiAlert-icon': {
+          color: mode === 'light' ? '#b08000' : darkPalette.warning?.main,
         },
       },
     },
-    MuiTooltip: {
-      defaultProps: {
-        arrow: true,
+  },
+  MuiSnackbar: {
+    defaultProps: {
+      anchorOrigin: { vertical: 'bottom', horizontal: 'center' },
+    },
+  },
+  MuiTabs: {
+    defaultProps: {
+      indicatorColor: 'primary',
+      textColor: 'primary',
+    },
+  },
+  MuiTab: {
+    styleOverrides: {
+      root: {
+        textTransform: 'none',
+        fontWeight: 500,
       },
     },
-    MuiListItem: {
-      defaultProps: {
-        dense: true,
-      },
-    },
-    MuiTable: {
-      defaultProps: {
-        size: 'small',
-      },
-    },
-    MuiFormControl: {
-      defaultProps: {
-        margin: 'normal',
-      },
-    },
-    MuiPaper: {
-      defaultProps: {
-        elevation: 0,
-      },
-    },
-    MuiContainer: {
-      defaultProps: {
-        maxWidth: 'xl',
-      },
-    },
-    MuiLink: {
-      styleOverrides: {
-        root: {
-          color: '#003049',
-          '&:hover': {
-            textDecorationColor: '#003049',
-          },
+  },
+  MuiAccordion: {
+    styleOverrides: {
+      root: {
+        borderRadius: 8,
+        '&:before': {
+          display: 'none',
         },
-      },
-    },
-    MuiDrawer: {
-      styleOverrides: {
-        paper: {
-          backgroundColor: '#fdf0d5',
-        },
-      },
-    },
-    MuiDialog: {
-      styleOverrides: {
-        paper: {
-          borderRadius: 8,
-        },
-      },
-    },
-    MuiAppBar: {
-      defaultProps: {
-        color: 'inherit',
-        elevation: 0,
-      },
-    },
-    MuiCssBaseline: {
-      styleOverrides: {
-        body: {
-          backgroundColor: '#fdf0d5',
-          color: '#003049',
-          fontFamily: `'Google Sans', sans-serif`,
-          lineHeight: 1.5,
-          WebkitFontSmoothing: 'antialiased',
-        },
-        '*': {
-          boxSizing: 'border-box',
-        },
-      },
-    },
-    MuiTypography: {
-      defaultProps: {
-        color: 'text.primary',
-      },
-      styleOverrides: {
-        button: {
-          textTransform: 'none',
-          fontWeight: 500,
-        },
-      },
-    },
-    MuiAlert: {
-      defaultProps: {
-        variant: 'filled', // El default para nuestro sistema es 'filled'
-      },
-      styleOverrides: {
-        // Ajustar el color del icono para standard/outlined warning para mejor contraste
-        standardWarning: {
-          '& .MuiAlert-icon': {
-            color: '#b08000', // Un amarillo/marrón más oscuro para el icono warning
-          },
-        },
-        outlinedWarning: {
-          '& .MuiAlert-icon': {
-            color: '#b08000', // Mismo color oscuro para outlined warning
-          },
-        },
-        // Asegurar que el texto en standard/outlined sea oscuro para todas las severidades
-        // MuiAlert ya lo hace bastante bien, pero podemos reforzarlo si es necesario.
-        // Por ahora, el principal problema detectado es el icono de warning.
-        // El texto principal por defecto hereda text.primary (#003049) que tiene buen contraste.
-      },
-    },
-    MuiSnackbar: {
-      defaultProps: {
-        anchorOrigin: { vertical: 'bottom', horizontal: 'center' },
-      },
-    },
-    MuiTabs: {
-      defaultProps: {
-        indicatorColor: 'primary',
-        textColor: 'primary',
-      },
-    },
-    MuiTab: {
-      styleOverrides: {
-        root: {
-          textTransform: 'none',
-          fontWeight: 500,
-        },
-      },
-    },
-    MuiAccordion: {
-      styleOverrides: {
-        root: {
-          borderRadius: 8,
-          '&:before': {
-            display: 'none',
-          },
-        },
+        // backgroundColor: mode === 'dark' ? darkPalette.background?.paper : lightPalette.background?.paper,
       },
     },
   },
 });
 
-theme = responsiveFontSizes(theme);
 
-export function ThemeProvider({ children }: PropsWithChildren<ReactNode>) {
+export const ColorModeContext = createContext({ toggleColorMode: () => {} });
+
+export function useColorMode() {
+  return useContext(ColorModeContext);
+}
+
+export function AppThemeProvider({ children }: PropsWithChildren<ReactNode>) {
+  // Podríamos usar useMediaQuery('(prefers-color-scheme: dark)') para el valor inicial
+  const [mode, setMode] = useState<'light' | 'dark'>('light');
+
+  const colorMode = useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+      },
+    }),
+    [],
+  );
+
+  let theme = useMemo(() => {
+    const currentPalette = mode === 'light' ? lightPalette : darkPalette;
+    const themeOptions: ThemeOptions = {
+      ...commonThemeOptions,
+      palette: currentPalette,
+      components: getComponentOverrides(mode),
+    };
+    return createTheme(themeOptions);
+  }, [mode]);
+
+  theme = responsiveFontSizes(theme);
+
   return (
-    <MuiThemeProvider theme={theme}>
-      <CssBaseline />
-      {children}
-    </MuiThemeProvider>
+    <ColorModeContext.Provider value={colorMode}>
+      <MuiThemeProvider theme={theme}>
+        <CssBaseline /> {/* CssBaseline debe estar dentro de MuiThemeProvider para acceder al tema */}
+        {children}
+      </MuiThemeProvider>
+    </ColorModeContext.Provider>
   );
 }
 
-export default theme;
+// Exportamos el tema por defecto (light) para usos donde no haya provider, aunque es mejor usar el AppThemeProvider
+const defaultTheme = responsiveFontSizes(createTheme({ ...commonThemeOptions, palette: lightPalette, components: getComponentOverrides('light') }));
+export default defaultTheme;
