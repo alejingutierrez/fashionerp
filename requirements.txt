@@ -1,5 +1,5 @@
 # --- core API ---
-fastapi==0.115.2
+fastapi==0.115.13
 uvicorn[standard]==0.23.2
 pydantic==2.7.1
 pydantic-settings==2.2.1
