@@ -31,12 +31,17 @@ const meta: Meta<typeof Alert> = {
     },
     hideIcon: { control: 'boolean' },
     autoHideDuration: { control: 'number' },
-    title: { control: 'text' },
-    children: { control: 'text' },
+    title: { control: 'text', description: 'Título opcional mostrado en negrita.' },
+    message: { control: 'text', description: 'Texto principal si no se usan children. Sobrescribe a children si ambos están presentes en el componente real (pero en Storybook, priorizar children si se edita).' },
+    children: { control: 'text', description: 'Contenido principal de la alerta (ReactNode). Usualmente preferido sobre message.' },
     action: {
       control: false, // ReactNode, no hay un control simple
       description: 'Permite añadir acciones personalizadas (ej. botones).',
     },
+    elevation: {
+      control: { type: 'number', min: 0, max: 24, step: 1 },
+      description: 'Controla el nivel de sombra del componente (0-24). Si no se define, usa defaults de la variante.',
+    }
   },
   parameters: {
     docs: {
@@ -180,4 +185,36 @@ AnimatedAlert.args = {
 AnimatedAlert.argTypes = {
   open: { control: false }, // Deshabilitar control para 'open' ya que se maneja internamente
   children: { control: 'text' },
+};
+
+export const FilledWithoutShadow: Story = {
+  name: 'Filled (Sin Sombra - elevation 0)',
+  args: {
+    variant: 'filled',
+    severity: 'success',
+    children: 'Alerta "filled" sin sombra explícita (elevation={0}).',
+    elevation: 0,
+  },
+};
+
+export const StandardWithHighElevation: Story = {
+  name: 'Standard (Elevación Alta - elevation 8)',
+  args: {
+    variant: 'standard',
+    severity: 'info',
+    children: 'Alerta "standard" con una sombra más pronunciada (elevation={8}).',
+    elevation: 8,
+    title: 'Standard Elevada',
+  },
+};
+
+export const OutlinedWithShadow: Story = {
+  name: 'Outlined (Con Sombra - elevation 1)',
+  args: {
+    variant: 'outlined',
+    severity: 'warning',
+    children: 'Alerta "outlined" a la que se le ha aplicado una sombra (elevation={1}).',
+    elevation: 1,
+    title: 'Outlined con Sombra',
+  },
 };
