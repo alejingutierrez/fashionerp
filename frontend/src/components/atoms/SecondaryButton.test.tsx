@@ -24,4 +24,9 @@ describe('SecondaryButton', () => {
     btn.click();
     expect(handleClick).not.toHaveBeenCalled();
   });
+
+  it('shows spinner when loading', () => {
+    renderWithTheme(<SecondaryButton loading>Load</SecondaryButton>);
+    expect(screen.getByRole('progressbar')).toBeInTheDocument();
+  });
 });

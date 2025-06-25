@@ -29,4 +29,9 @@ describe('Avatar', () => {
     const root = getByText('JP');
     expect(root).toHaveStyle({ width: '64px', height: '64px' });
   });
+
+  it('shows status badge when status is provided', () => {
+    renderWithTheme(<Avatar status="online">JP</Avatar>);
+    expect(screen.getByTestId('avatar-status')).toBeInTheDocument();
+  });
 });

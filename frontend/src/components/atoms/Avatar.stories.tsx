@@ -8,12 +8,17 @@ const meta: Meta<typeof Avatar> = {
     src: 'https://i.pravatar.cc/40',
     alt: 'Foto de usuario',
     size: 'medium',
+    status: undefined,
   },
   argTypes: {
     src: { control: 'text' },
     alt: { control: 'text' },
     variant: { control: 'select', options: ['circular', 'rounded', 'square'] },
     size: { control: 'select', options: ['small', 'medium', 'large'] },
+    status: {
+      control: 'select',
+      options: [undefined, 'online', 'offline', 'busy', 'away'],
+    },
   },
 };
 export default meta;
@@ -32,4 +37,8 @@ export const Rounded: Story = {
 
 export const Large: Story = {
   args: { size: 'large' },
+};
+
+export const WithStatus: Story = {
+  args: { status: 'online' },
 };

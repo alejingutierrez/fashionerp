@@ -1,7 +1,15 @@
+import { Box, CircularProgress } from '@mui/material';
 import { Button as MuiButton, ButtonProps as MuiButtonProps } from '@mui/material';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, ReactNode } from 'react';
 
-export type SecondaryButtonProps = MuiButtonProps & PropsWithChildren;
+export interface SecondaryButtonProps extends MuiButtonProps, PropsWithChildren {
+  /** Activa un spinner y deshabilita el botón. */
+  loading?: boolean;
+  /** Posición del spinner. */
+  loadingPosition?: 'start' | 'end' | 'center';
+  /** Texto a mostrar cuando está cargando. */
+  loadingText?: ReactNode;
+}
 
 /**
  * Botón secundario para acciones alternativas.
@@ -13,19 +21,37 @@ export function SecondaryButton({
   disabled = false,
   startIcon,
   endIcon,
+  loading = false,
+  loadingPosition = 'center',
+  loadingText,
   ...props
 }: PropsWithChildren<SecondaryButtonProps>) {
+  const spinner = <CircularProgress size={20} color="inherit" />;
+  const content = loading && loadingText ? loadingText : children;
+
   return (
     <MuiButton
       variant="outlined"
       color="secondary"
       onClick={onClick}
-      disabled={disabled}
-      startIcon={startIcon}
-      endIcon={endIcon}
+      disabled={disabled || loading}
+      startIcon={loading && loadingPosition === 'start' ? spinner : startIcon}
+      endIcon={loading && loadingPosition === 'end' ? spinner : endIcon}
+      aria-busy={loading || undefined}
       {...props}
     >
-      {children}
+      {loading && loadingPosition === 'center' ? (
+        <>
+          {spinner}
+          {loadingText && (
+            <Box component="span" sx={{ ml: 1 }}>
+              {loadingText}
+            </Box>
+          )}
+        </>
+      ) : (
+        content
+      )}
     </MuiButton>
   );
 }
