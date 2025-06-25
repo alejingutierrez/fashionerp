@@ -188,9 +188,9 @@ let theme = createTheme({
     },
     MuiAlert: {
       defaultProps: {
-         variant: 'filled', // El default para nuestro sistema es 'filled'
-       },
-       styleOverrides: {
+        variant: 'filled', // El default para nuestro sistema es 'filled'
+      },
+      styleOverrides: {
         // Ajustar el color del icono para standard/outlined warning para mejor contraste
         standardWarning: {
           '& .MuiAlert-icon': {
