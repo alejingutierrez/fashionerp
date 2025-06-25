@@ -16,6 +16,8 @@ export interface AlertProps extends Omit<MuiAlertProps, 'children'> {
    * Requiere `onClose`.
    */
   autoHideDuration?: number;
+  /** Permite añadir acciones personalizadas (ej. botones) a la alerta. */
+  action?: ReactNode;
 }
 
 /**
@@ -30,6 +32,7 @@ export function Alert({
   hideIcon = false,
   size = 'medium',
   autoHideDuration,
+  action,
   children,
   ...props
 }: PropsWithChildren<AlertProps>) {
@@ -46,7 +49,15 @@ export function Alert({
   const { sx, ...rest } = props;
 
   const sizeStyles =
-    size === 'small' ? { py: 0.5, px: 1.5, fontSize: '0.875rem' } : undefined;
+    size === 'small' ? { py: 0.5, px: 1.5, fontSize: '0.875rem' } : {};
+
+  const commonStyles = (theme: any) => ({ // any para acceso a theme.shadows y theme.shape
+    borderRadius: theme.shape.borderRadius,
+    // Aplicar sombra a standard y filled. Outlined usualmente no lleva.
+    ...(variant === 'standard' || variant === 'filled'
+      ? { boxShadow: theme.shadows[1] }
+      : {}),
+  });
 
   return (
     <MuiAlert
@@ -54,7 +65,12 @@ export function Alert({
       variant={variant}
       onClose={onClose}
       icon={hideIcon ? false : undefined}
-      sx={{ ...sizeStyles, ...sx }}
+      action={action}
+      sx={{
+        ...commonStyles, // Aplicar estilos comunes que dependen del tema
+        ...sizeStyles, // Aplicar estilos de tamaño
+        ...sx, // Permitir overrides del usuario
+      }}
       {...rest}
     >
       {title && <MuiAlertTitle>{title}</MuiAlertTitle>}

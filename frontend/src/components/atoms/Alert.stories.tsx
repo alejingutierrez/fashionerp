@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import Button from '@mui/material/Button';
 import { Alert } from './Alert';
 
 const meta: Meta<typeof Alert> = {
@@ -27,6 +28,10 @@ const meta: Meta<typeof Alert> = {
     autoHideDuration: { control: 'number' },
     title: { control: 'text' },
     children: { control: 'text' },
+    action: {
+      control: false, // ReactNode, no hay un control simple
+      description: 'Permite añadir acciones personalizadas (ej. botones).',
+    },
   },
 };
 export default meta;
@@ -71,4 +76,17 @@ export const WithoutIcon: Story = {
 
 export const AutoHide: Story = {
   args: { onClose: () => {}, autoHideDuration: 3000, children: 'Se cierra solo' },
+};
+
+export const WithAction: Story = {
+  args: {
+    severity: 'warning',
+    children: 'Se ha eliminado un elemento.',
+    action: (
+      <Button color="inherit" size="small">
+        DESHACER
+      </Button>
+    ),
+    onClose: () => {}, // Para que se muestre el botón de cierre también
+  },
 };

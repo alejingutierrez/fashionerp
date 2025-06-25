@@ -6,10 +6,34 @@ import { Alert } from './Alert';
 
 # Alert
 
-Indicador visual de información, éxito, advertencia o error.
+El componente `Alert` se utiliza para mostrar mensajes importantes al usuario, clasificados por severidad: información, éxito, advertencia o error. Ha sido mejorado visualmente para alinearse con la estética moderna y el sistema de diseño corporativo, utilizando los colores, bordes redondeados (`8px`) y sombras sutiles definidos en el tema de MUI.
 
-Permite ocultar el icono, elegir un tamaño compacto y definir un tiempo de cierre automático.
+**Características principales:**
 
+- **Severidades:** `info`, `success`, `warning`, `error`.
+- **Variantes:** `filled` (predeterminada por el tema), `standard`, `outlined`.
+- **Personalización:**
+    - Título opcional.
+    - Ocultar el icono de severidad.
+    - Tamaño compacto (`small`).
+    - Cierre automático (`autoHideDuration`).
+    - **Acciones personalizadas (`action`):** Permite añadir botones u otros elementos interactivos.
+- **Estilo:** Utiliza los colores corporativos del tema para cada severidad y presenta un `boxShadow` en variantes `filled` y `standard` para mayor profundidad.
+
+## Ejemplos
+
+### Información (Básica)
 <Story id="atoms-alert--info" />
 
-<ArgsTable of={Alert} story="Info" />
+### Con Título y Severidad de Error
+<Story id="atoms-alert--with-title" />
+
+### Variante `filled` (Predeterminada por Tema)
+<Story id="atoms-alert--filled" />
+
+### Con Acciones Personalizadas
+<Story id="atoms-alert--with-action" />
+
+## Propiedades
+
+<ArgsTable of={Alert} />

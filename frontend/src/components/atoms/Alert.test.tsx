@@ -74,6 +74,102 @@ describe('Alert', () => {
   it('applies small size styles', () => {
     const { container } = renderWithTheme(<Alert size="small">Pequeña</Alert>);
     const root = container.firstChild as HTMLElement;
-    expect(root).toHaveStyle('font-size: 0.875rem');
+    expect(root).toHaveStyle('font-size: 0.875rem'); // py: 0.5, px: 1.5
+    expect(root).toHaveStyle('padding-top: 0.25rem'); // theme.spacing(0.5) is 4px with spacing = 8. py: 0.5 means paddingTop and paddingBottom
+    expect(root).toHaveStyle('padding-left: 0.75rem'); // theme.spacing(1.5) is 12px
+  });
+
+  it('renders action when provided', () => {
+    renderWithTheme(
+      <Alert action={<button type="button">Acción</button>}>Con acción</Alert>,
+    );
+    expect(screen.getByRole('button', { name: 'Acción' })).toBeInTheDocument();
+  });
+
+  it('applies borderRadius from theme', () => {
+    const { container } = renderWithTheme(<Alert>Con borde</Alert>);
+    const root = container.firstChild as HTMLElement;
+    expect(root).toHaveStyle('border-radius: 8px'); // theme.shape.borderRadius
+  });
+
+  it('applies boxShadow for standard variant', () => {
+    const { container } = renderWithTheme(
+      <Alert variant="standard">Sombra standard</Alert>,
+    );
+    const root = container.firstChild as HTMLElement;
+    // Este es theme.shadows[1] por defecto en MUI
+    expect(root).toHaveStyle(
+      'box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)',
+    );
+  });
+
+  it('applies boxShadow for filled variant', () => {
+    const { container } = renderWithTheme(
+      <Alert variant="filled">Sombra filled</Alert>,
+    );
+    const root = container.firstChild as HTMLElement;
+    expect(root).toHaveStyle(
+      'box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)',
+    );
+  });
+
+  it('does not apply boxShadow for outlined variant', () => {
+    const { container } = renderWithTheme(
+      <Alert variant="outlined">Sin Sombra outlined</Alert>,
+    );
+    const root = container.firstChild as HTMLElement;
+    // MUI outlined alerts might have 'none' or just not have the property.
+    // Checking it's not the specific shadow is safer.
+    expect(root.style.boxShadow).not.toBe(
+      '0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)',
+    );
+  });
+
+  describe('Corporate Colors', () => {
+    // El tema tiene MuiAlert: defaultProps: { variant: 'filled' }
+    // por lo que no es necesario especificar variant="filled" para probar colores de filled.
+
+    it('applies error colors for error severity (filled)', () => {
+      const { container } = renderWithTheme(<Alert severity="error">Error</Alert>);
+      const root = container.firstChild as HTMLElement;
+      expect(root).toHaveStyle('background-color: rgb(120, 0, 0)'); // #780000
+      expect(root).toHaveStyle('color: rgb(253, 240, 213)'); // #fdf0d5
+    });
+
+    it('applies info colors for info severity (filled)', () => {
+      const { container } = renderWithTheme(<Alert severity="info">Info</Alert>);
+      const root = container.firstChild as HTMLElement;
+      expect(root).toHaveStyle('background-color: rgb(0, 48, 73)'); // #003049
+      expect(root).toHaveStyle('color: rgb(253, 240, 213)'); // #fdf0d5
+    });
+
+    it('applies success colors for success severity (filled)', () => {
+      const { container } = renderWithTheme(
+        <Alert severity="success">Success</Alert>,
+      );
+      const root = container.firstChild as HTMLElement;
+      expect(root).toHaveStyle('background-color: rgb(42, 157, 143)'); // #2a9d8f
+      expect(root).toHaveStyle('color: rgb(253, 240, 213)'); // #fdf0d5
+    });
+
+    it('applies warning colors for warning severity (filled)', () => {
+      const { container } = renderWithTheme(
+        <Alert severity="warning">Warning</Alert>,
+      );
+      const root = container.firstChild as HTMLElement;
+      expect(root).toHaveStyle('background-color: rgb(233, 196, 106)'); // #e9c46a
+      expect(root).toHaveStyle('color: rgb(0, 48, 73)'); // #003049
+    });
+
+    // Para standard, el color principal afecta al icono y al texto, no al fondo.
+    it('applies info color to icon for info severity (standard)', () => {
+      const { container } = renderWithTheme(
+        <Alert severity="info" variant="standard">
+          Info Standard
+        </Alert>,
+      );
+      const icon = container.querySelector('.MuiAlert-icon');
+      expect(icon).toHaveStyle('color: rgb(0, 48, 73)'); // #003049
+    });
   });
 });

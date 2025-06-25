@@ -188,7 +188,24 @@ let theme = createTheme({
     },
     MuiAlert: {
       defaultProps: {
-        variant: 'filled',
+         variant: 'filled', // El default para nuestro sistema es 'filled'
+       },
+       styleOverrides: {
+        // Ajustar el color del icono para standard/outlined warning para mejor contraste
+        standardWarning: {
+          '& .MuiAlert-icon': {
+            color: '#b08000', // Un amarillo/marrón más oscuro para el icono warning
+          },
+        },
+        outlinedWarning: {
+          '& .MuiAlert-icon': {
+            color: '#b08000', // Mismo color oscuro para outlined warning
+          },
+        },
+        // Asegurar que el texto en standard/outlined sea oscuro para todas las severidades
+        // MuiAlert ya lo hace bastante bien, pero podemos reforzarlo si es necesario.
+        // Por ahora, el principal problema detectado es el icono de warning.
+        // El texto principal por defecto hereda text.primary (#003049) que tiene buen contraste.
       },
     },
     MuiSnackbar: {
