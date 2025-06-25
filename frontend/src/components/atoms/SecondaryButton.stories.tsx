@@ -15,6 +15,12 @@ const meta: Meta<typeof SecondaryButton> = {
     endIcon: { control: false },
     children: { control: 'text' },
     disabled: { control: 'boolean' },
+    loading: { control: 'boolean' },
+    loadingPosition: {
+      control: 'select',
+      options: ['center', 'start', 'end'],
+    },
+    loadingText: { control: 'text' },
   },
 };
 export default meta;
@@ -32,4 +38,12 @@ export const WithIcons: Story = {
     startIcon: <SaveIcon />,
     endIcon: <DeleteIcon />,
   },
+};
+
+export const Loading: Story = {
+  args: { loading: true },
+};
+
+export const LoadingWithText: Story = {
+  args: { loading: true, loadingText: 'Saving...' },
 };

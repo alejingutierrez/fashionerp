@@ -1,0 +1,13 @@
+import { Meta, Story, ArgsTable } from '@storybook/blocks';
+import * as Stories from './PrimaryButton.stories';
+import { PrimaryButton } from './PrimaryButton';
+
+<Meta of={Stories} />
+
+# PrimaryButton
+
+Botón principal que destaca la acción clave en cada vista. Admite estados de carga y muestra un spinner opcional.
+
+<Story id="atoms-primarybutton--default" />
+
+<ArgsTable of={PrimaryButton} story="Default" />

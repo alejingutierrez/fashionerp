@@ -15,6 +15,12 @@ const meta: Meta<typeof TertiaryButton> = {
     children: { control: 'text' },
     disabled: { control: 'boolean' },
     href: { control: 'text' },
+    loading: { control: 'boolean' },
+    loadingPosition: {
+      control: 'select',
+      options: ['center', 'start', 'end'],
+    },
+    loadingText: { control: 'text' },
   },
 };
 export default meta;
@@ -29,4 +35,12 @@ export const Disabled: Story = {
 
 export const WithIcon: Story = {
   args: { endIcon: <ArrowForwardIcon /> },
+};
+
+export const Loading: Story = {
+  args: { loading: true },
+};
+
+export const LoadingWithText: Story = {
+  args: { loading: true, loadingText: 'Loading...' },
 };

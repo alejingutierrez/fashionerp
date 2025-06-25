@@ -39,4 +39,10 @@ describe('TertiaryButton', () => {
     const link = screen.getByRole('link', { name: /link/i });
     expect(link).toHaveAttribute('href', 'https://example.com');
   });
+
+  it('shows spinner when loading', () => {
+    renderWithTheme(<TertiaryButton loading>Loading</TertiaryButton>);
+    expect(screen.getByRole('progressbar')).toBeInTheDocument();
+    expect(screen.getByRole('button')).toBeDisabled();
+  });
 });
