@@ -1,0 +1,13 @@
+import { Meta, Story, ArgsTable } from '@storybook/blocks';
+import { SecondaryButton } from './SecondaryButton';
+import * as Stories from './SecondaryButton.stories';
+
+<Meta of={Stories} />
+
+# SecondaryButton
+
+Use the SecondaryButton for secondary actions. It wraps MUI `Button` with the `outlined` variant and `secondary` color.
+
+<Story id="atoms-secondarybutton--default" />
+
+<ArgsTable of={SecondaryButton} story="Default" />

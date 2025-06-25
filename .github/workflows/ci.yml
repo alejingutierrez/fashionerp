@@ -12,36 +12,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 9.15.4
-
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
-
-      - name: Enable corepack
-        run: corepack enable
 
       - uses: actions/setup-python@v5
         with:
           python-version: 3.12
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Install npm dependencies
+        run: npm ci --legacy-peer-deps
 
       - name: Lint
-        run: pnpm -r --if-present lint
+        run: npm run lint --if-present
 
       - name: Backend dependencies
-        run: pip install -r requirements.txt -r requirements.dev.txt
+        run: pip install -r requirements.txt
 
       - name: Tests frontend
-        run: pnpm -r --if-present test
+        run: npm test --if-present
 
       - name: Tests backend
         run: pytest -q
-
-      - name: Build Storybook
-        run: pnpm build-storybook

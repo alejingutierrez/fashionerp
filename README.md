@@ -9,12 +9,11 @@
 2. [Arquitectura](#arquitectura)
 3. [Requisitos previos](#requisitos-previos)
 4. [Instalación rápida](#instalación-rápida)
-5. [Scripts pnpm / CLI](#scripts-pnpm--cli)
+5. [Scripts npm / CLI](#scripts-npm--cli)
 6. [Estrategia Docker](#estrategia-docker)
-7. [Variables de entorno](#variables-de-entorno)
-8. [Entornos](#entornos)
-9. [Contribuir](#contribuir)
-10. [Licencia](#licencia)
+7. [Entornos](#entornos)
+8. [Contribuir](#contribuir)
+9. [Licencia](#licencia)
 
 ---
 
@@ -47,8 +46,6 @@ graph TD
 | Docker        | 24.x           | Contenedores                |
 | Docker Compose| 2.20           | Entorno dev                 |
 
-Las versiones de referencia se definen en `.nvmrc` (Node 20 LTS) y `.python-version` (Python 3.12).
-
 ## Instalación rápida
 ```bash
 git clone https://github.com/<org>/fashionerp.git
@@ -56,48 +53,31 @@ cd fashionerp
 
 # Front-end
 cd frontend
-pnpm install            # instala dependencias
-pnpm run dev       # http://localhost:3000
+npm ci            # usa package-lock.json
+npm run dev       # http://localhost:3000
 
 # Back-end
 cd ../backend
 python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt -r requirements.dev.txt
+pip install -r requirements.txt
 uvicorn app.main:app --reload  # http://localhost:8000/docs
 ```
 
-## Scripts pnpm / CLI
+## Scripts npm / CLI
 
 | Comando                                           | Descripción                               |
 |---------------------------------------------------|-------------------------------------------|
-| `pnpm run dev`                                     | Arranca Vite con HMR en localhost:3000    |
-| `pnpm run build`                                   | Compila la SPA en `dist/`                 |
-| `pnpm run storybook`                               | Doc y sandbox de componentes (:6006)      |
+| `npm run dev`                                     | Arranca Vite con HMR en localhost:3000    |
+| `npm run build`                                   | Compila la SPA en `dist/`                 |
+| `npm run storybook`                               | Doc y sandbox de componentes (:6006)      |
 | `pytest -q`                                       | Ejecuta tests backend                     |
-| `docker-compose -f docker-compose.dev.yml up`     | Entorno completo (db, front, back) |
-
-## Ejecutar pruebas
-
-```bash
-cd backend
-pytest -q
-```
-
+| `docker-compose -f docker-compose.dev.yml up`     | Entorno completo (db, redis, front, back) |
 
 ## Estrategia Docker
 - Multi-stage build para imágenes pequeñas.
 - Separación: frontend, backend, db, redis, storybook.
 - Volúmenes montados solo en dev para hot-reload.
 - Variables de entorno declaradas en `.env` (no commit real keys).
-
-## Variables de entorno
-1. Copia `\.env.example` a `\.env` en la raíz del proyecto.
-2. Ajusta los valores de API, base de datos y claves según tu entorno.
-
-```bash
-cp .env.example .env
-# luego edita .env
-```
 
 ## Entornos
 
