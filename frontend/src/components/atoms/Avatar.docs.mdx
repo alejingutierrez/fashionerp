@@ -8,7 +8,11 @@ import { Avatar } from './Avatar';
 
 El componente `Avatar` se utiliza para mostrar la imagen de perfil de un usuario, sus iniciales, o un icono genérico si ninguna de las anteriores está disponible. Ofrece varias opciones de personalización, incluyendo tamaño, forma, indicadores de estado y badges de notificación.
 
-El componente soporta temas claro y oscuro automáticamente a través del `AppThemeProvider` global.
+**Mejoras Recientes:**
+*   **Estética Pulida:** Se han añadido sutiles sombras y mejoras en los bordes de los indicadores de estado y badges tipo "dot" para ofrecer una apariencia visual más moderna, definida y con mayor profundidad.
+*   **Consistencia de Tema:** Los estilos base del Avatar, incluyendo una sombra general para dar relieve, y los colores de los indicadores y badges, están ahora más integrados con el tema de la aplicación (modos light/dark), asegurando una experiencia visual cohesiva. El color para el estado `offline` (`grey.400`) ha sido estandarizado en la paleta del tema para garantizar un contraste adecuado.
+
+El componente soporta temas claro y oscuro automáticamente a través del `AppThemeProvider` global, lo cual puede probarse usando el control de tema en la barra de herramientas de Storybook.
 
 ## Ejemplos Principales
 
@@ -31,6 +35,10 @@ Se puede añadir un badge para mostrar notificaciones, ya sea como un punto o co
 El color y otras propiedades del badge se pueden personalizar usando la prop `BadgeProps`. Por ejemplo, para un badge de error:
 ```tsx
 <Avatar badgeContent={1} BadgeProps={{ color: 'error' }}>U</Avatar>
+```
+Para badges de tipo "dot" (`badgeContent={true}`), que son puramente visuales, se recomienda proporcionar contexto adicional o un `title` a través de `BadgeProps` si su significado no es inmediatamente obvio desde el contexto circundante. Ejemplo:
+```tsx
+<Avatar badgeContent={true} BadgeProps={{ title: 'Nuevas alertas' }}>U</Avatar>
 ```
 <Canvas of={Stories.CustomizableBadge} />
 
