@@ -1,0 +1,13 @@
+import { Meta, Story, ArgsTable } from '@storybook/blocks';
+import * as Stories from './CommentItem.stories';
+import { CommentItem } from './CommentItem';
+
+<Meta of={Stories} />
+
+# CommentItem
+
+Molecula que representa un comentario o entrada en un historial.
+
+<Story id="molecules-commentitem--usuario" />
+
+<ArgsTable of={CommentItem} story="Usuario" />

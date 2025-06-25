@@ -1,0 +1,16 @@
+import { Meta, Story, ArgsTable } from '@storybook/blocks';
+import * as Stories from './ColorSwatchSelector.stories';
+import { ColorSwatchSelector } from './ColorSwatchSelector';
+
+<Meta of={Stories} />
+
+# ColorSwatchSelector
+
+Molecula para elegir un color oficial evitando duplicados.
+
+<ArgsTable of={ColorSwatchSelector} />
+
+<Story id="molecules-colorswatchselector--sin-seleccion" />
+<Story id="molecules-colorswatchselector--seleccionado" />
+<Story id="molecules-colorswatchselector--color-duplicado" />
+<Story id="molecules-colorswatchselector--solo-lectura" />
